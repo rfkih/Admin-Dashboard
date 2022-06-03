@@ -1,0 +1,6 @@
+export { default as Customers } from './Customers'
+export { default as Dashboard } from './Dashboard'
+export { default as Orders } from './Orders'
+export { default as Transaction } from './Transaction'
+export { default as Login } from './Login'
+export { default as Register} from './Register'
