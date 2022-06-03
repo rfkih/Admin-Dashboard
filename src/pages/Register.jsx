@@ -46,7 +46,8 @@ function Register() {
       setFormState(initFormState);
       alert("Registrasi berhasil & verifikasi account melalui Email");
     } catch (error) {
-      alert("Registrasi gagal");
+      console.log(error.response.data.message);
+      alert(error.response.data.message);
     }
   };
 
