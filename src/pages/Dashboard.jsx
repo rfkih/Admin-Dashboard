@@ -1,7 +1,8 @@
-import React from 'react'
+import React,{useState, useEffect} from 'react'
 import { Button, SparkLine } from '../components'
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
+import axios from '../utils/axios'
 
 import {earningData} from '../components/data' 
 import { GoPrimitiveDot } from 'react-icons/go';
@@ -15,6 +16,69 @@ import { HiOutlineRefresh } from 'react-icons/hi';
 
 
 function Dashboard() {
+  const [ countUser, setCountUser ] = useState(0)
+  const [ totalSold, setTotalSold] = useState(0)
+  const [ graphData, setGraphData ] = useState([])
+  const [ sortUser, setSortUser] = useState('')
+  const [ keywordUser, setKeywordUser] = useState('')
+  const [ range, setRange] = useState(12)
+  const [ year, setYear] = useState(null)
+  const [ revenueDetail, setRevenueDetail] = useState(false)
+  const [ totalRevenue, setTotalRevenue] = useState(0)
+  const [ revenueToday, setRevenueToday] = useState(0)
+  const [ revenueSeven, setRevenueSeven] = useState(0)
+  const [ revenueThirty, setRevenueThirty] = useState(0)
+
+
+
+
+  const getCompletedTransaction = async () => {
+        
+    const month = {month: range, yeardata: year}
+    try {
+        const res = await axios.get("/transaction/completed", {params: (month)});
+        const data  = res.data;
+        setTotalRevenue(data.sumResultAll[0].total_revenue);
+        setRevenueThirty(data.sumResultThirty[0].total_revenue);
+        setRevenueSeven(data.sumResultSeven[0].total_revenue);
+        setGraphData(data.detailTransactionMonth);
+       if(data.sumResultToday[0].total_revenue){
+        setRevenueToday(data.sumResultToday[0].total_revenue)
+       } 
+    } catch (error) {
+        console.log(alert(error.message));
+    }
+}
+
+
+
+  const fetchUser = async () => {
+    try {
+        const res = await axios.get("/users/admin", {params: { pages:(``), sortUser, keywordUser }});
+        const data  = res.data;
+        setCountUser(data.userCount[0].user_count);
+    } catch (error) {
+        console.log(alert(error.message));
+    }
+};
+
+
+console.log(totalSold);
+useEffect(() => {
+  fetchUser();
+  getTransactionDetail();
+},[])
+
+const getTransactionDetail = async () => {
+  try {
+
+      const res = await axios.get("/transactiondetails")
+      const data  = res.data;
+      setTotalSold(data.totalSold[0].total_sold);
+  } catch (error) {
+      console.log(alert(error.message));
+  }
+};
 
 
 
@@ -66,9 +130,9 @@ function Dashboard() {
         </div>
         <div className='flex m-3 flex-wrap justify-center gap-1 items-center'>
             <Card icon={<BsBoxSeam />} amount={2323} title={'Products'} iconColor={'rgb(255, 244, 229)'} iconBg={'rgb(254, 201, 15)'}/>    
-            <Card icon={<MdOutlineSupervisorAccount />} amount='1258' percentage='-4%' title='Customers' iconColor='#03C9D7' iconBg='#E5FAFB' pcColor='red-600'/>
+            <Card icon={<MdOutlineSupervisorAccount />} amount={countUser} percentage='-4%' title='Customers' iconColor='#03C9D7' iconBg='#E5FAFB' pcColor='red-600'/>
             <Card icon={<HiOutlineRefresh/>} amount={55} title={'Refunds'} iconBg={`rgb(235, 250, 242)`} iconColor={'rgb(0, 194, 146)'}/>
-            <Card icon={<FiBarChart />} amount={343} title={'Product Sold'} iconBg={'rgb(255, 244, 229)'} iconColor={'rgb(228, 106, 118)'}/>
+            <Card icon={<FiBarChart />} amount={totalSold} title={'Product Sold'} iconBg={'rgb(255, 244, 229)'} iconColor={'rgb(228, 106, 118)'}/>
         </div>   
       </div>
       <div className='flex gap-10 flex-wrap justify-center'>
