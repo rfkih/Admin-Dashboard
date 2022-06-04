@@ -4,6 +4,7 @@ import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, Fi
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import axios from '../utils/axios'
 import {SparkLine } from './'
+import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 
 import {earningData} from '../components/data' 
 import { GoPrimitiveDot } from 'react-icons/go';
@@ -12,6 +13,7 @@ import { IoMdContacts } from 'react-icons/io';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
+import { useStateContext} from '../contexts/ContextProvider'
 
 
 
@@ -28,6 +30,7 @@ function Dashboard() {
   const [ countProduct, setCountProduct] = useState(0)
   const [ revenueDetail, setRevenueDetail] = useState(false)
   const [ totalRevenue, setTotalRevenue] = useState(0)
+  const { activeMenu, role, setRole, userId, setUserId, setActiveMenu, isLogin, setIsLogin  } = useStateContext();
 
 
   
@@ -119,6 +122,11 @@ const getTransactionDetail = async () => {
   
   
   )}
+
+
+
+
+
   return (
     <div className='mt-12'>
       <div className='flex flex-wrap lg:flex-nowrap justify-center'>

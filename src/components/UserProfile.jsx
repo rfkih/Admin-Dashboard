@@ -36,13 +36,13 @@ function UserProfile() {
   const dispatch = useDispatch();
   const {currentColor, setIsLogin} = useStateContext();
 
-
+  const navigate = useNavigate();
 
   const onLogoutClick = () => {
-
     dispatch(logoutAction());
-    <Navigate to="/" replace />;
-    setIsLogin(false);
+    setIsLogin(false); 
+    navigate('/')
+   
     
   };
   return (
