@@ -49,7 +49,7 @@ function Login() {
         password: formState.password,
       });
       const payload = res.data;
-
+      console.log(payload)
       const actionObj = loginAction(payload);
       console.log(actionObj);
       dispatch(actionObj);

@@ -33,8 +33,13 @@ const userProfileData = [
 ];
 
 function UserProfile() {
+  const { username, role, id, photo, email } = useSelector((state) => {
+    return state.auth;
+  });
   const dispatch = useDispatch();
   const {currentColor, setIsLogin} = useStateContext();
+
+  console.log(email)
 
   const navigate = useNavigate();
 
@@ -60,13 +65,13 @@ function UserProfile() {
       <div className='flex gap-5 items-center mt-6 border-color border-b-1 pb-6'>
         <img
           className='rounded-full h-24 w-24'
-          src={'https://images.unsplash.com/photo-1533450718592-29d45635f0a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8anBnfGVufDB8fDB8fA%3D%3D&w=1000&q=80'}
+          src={photo}
           alt="User Profile"
         />
         <div>
-          <p className="font-semibold text-xl dark:text-gray-200"> Michael Roberts </p>
-          <p className="text-gray-500 text-sm dark:text-gray-400">  Administrator   </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> info@shop.com </p>
+          <p className="font-semibold text-xl dark:text-gray-200">{username}</p>
+          <p className="text-gray-500 text-sm dark:text-gray-400 capitalize"> {role}  </p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {email} </p>
         </div>
       </div>
       <div>

@@ -5,6 +5,7 @@ import { BsChatLeft } from 'react-icons/bs';
 import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
 import React, {useEffect} from 'react'
+import { useSelector } from 'react-redux';
 
 
 import { Cart , UserProfile, Notification, Chat} from '.';
@@ -32,6 +33,9 @@ const NavButton = ({title, customFunc, icon, color, dotColor}) => (
 )
 
 function Navbar() {
+    const { username, role, id, photo } = useSelector((state) => {
+        return state.auth;
+      });
     const { activeMenu, setActiveMenu, currentColor, isClicked, setIsClicked, setScreenSize, screenSize, handleClick } = useStateContext();
 
 
@@ -73,7 +77,7 @@ function Navbar() {
             >
                 <img
                   className="rounded-full w-8 h-8"
-                  src='https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Lake_mapourika_NZ.jpeg/800px-Lake_mapourika_NZ.jpeg'
+                  src={photo}
                   alt="user-profile"
                 />
                 <p>

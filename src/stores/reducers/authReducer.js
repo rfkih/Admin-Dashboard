@@ -4,6 +4,7 @@ const init = {
     role: "",
     token: "",
     photo: "",
+    email: '',
     berhasil: "hore",
   };
 
@@ -18,6 +19,7 @@ const init = {
           username: action.payload.username,
           role: action.payload.role,
           token: action.payload.token,
+          email: action.payload.email,
           photo: action.payload.photo
         };
   

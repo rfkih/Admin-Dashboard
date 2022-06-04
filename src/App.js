@@ -20,9 +20,9 @@ function App() {
     if (userLocalStorage) {
       const userData = JSON.parse(userLocalStorage);
 
-      const { id, username, role, tokens, photo } = userData;
+      const { id, username, role, tokens, photo, email } = userData;
 
-      dispatch(keepLoginAction({ id, username, role, tokens, photo }));
+      dispatch(keepLoginAction({ id, username, role, tokens, photo, email }));
       setIsLogin(true)
     }
    
