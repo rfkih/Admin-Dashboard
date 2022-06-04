@@ -1,8 +1,9 @@
 import React,{useState, useEffect} from 'react'
-import { Button, SparkLine } from '../components'
+import { Button} from '../components'
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import axios from '../utils/axios'
+import {SparkLine } from './'
 
 import {earningData} from '../components/data' 
 import { GoPrimitiveDot } from 'react-icons/go';
@@ -29,8 +30,7 @@ function Dashboard() {
   const [ totalRevenue, setTotalRevenue] = useState(0)
 
 
-
-
+  
 
   const getCompletedTransaction = async () => {
         
@@ -182,7 +182,14 @@ const getTransactionDetail = async () => {
                 </p>
               </div>
               <div className='mt-5'>
-                <SparkLine/>
+                <SparkLine 
+                      currentColor="blue"
+                      id="line-sparkLine" 
+                      type="Line" 
+                      height="80px" 
+                      width="250px" 
+                      data={graphData} 
+                      color="blue" />
               </div>
               <div className='mt-10'>
                     <Button
