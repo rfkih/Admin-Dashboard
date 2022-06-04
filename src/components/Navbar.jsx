@@ -7,7 +7,7 @@ import { MdKeyboardArrowDown } from 'react-icons/md';
 import React, {useEffect} from 'react'
 
 
-import { Cart , UserProfile} from '.';
+import { Cart , UserProfile, Notification, Chat} from '.';
 import { Links} from './data'
 import { useStateContext } from '../contexts/ContextProvider';
 
@@ -32,7 +32,7 @@ const NavButton = ({title, customFunc, icon, color, dotColor}) => (
 )
 
 function Navbar() {
-    const { activeMenu, setActiveMenu, isClicked, setIsClicked, setScreenSize, screenSize, handleClick } = useStateContext();
+    const { activeMenu, setActiveMenu, currentColor, isClicked, setIsClicked, setScreenSize, screenSize, handleClick } = useStateContext();
 
 
     useEffect(() => {
@@ -63,7 +63,9 @@ function Navbar() {
     {!activeMenu ? <NavButton title="Menu" customFunc={handleActiveMenu} color="blue" icon={<AiOutlineMenu />}/> : <div/> }
     
     <div className='flex'>
-        <NavButton title="Cart" customFunc={() => handleClick('cart')} color="blue" icon={<FiShoppingCart />}/> 
+        <NavButton title="Cart" customFunc={() => handleClick('cart')} color="blue" icon={<FiShoppingCart />}/>
+        <NavButton title="Chat" dotColor="#03C9D7" customFunc={() => handleClick('chat')} color={currentColor} icon={<BsChatLeft />} />
+        <NavButton title="Notification" dotColor="rgb(254, 201, 15)" customFunc={() => handleClick('notification')} color={currentColor} icon={<RiNotification3Line />} /> 
         <TooltipComponent content="Profile" position="BottomCenter">
             <div
                 className='flex items-center gap-2 cursor-pointer p-1 hover:bg-light-gray rounded-lg'
@@ -83,6 +85,10 @@ function Navbar() {
                 <MdKeyboardArrowDown className="text-gray-400 text-14" />
             </div>
         </TooltipComponent>
+        {isClicked.cart && (<Cart />)}
+        {isClicked.chat && (<Chat />)}
+        {isClicked.notification && (<Notification />)}
+        {isClicked.userProfile && (<UserProfile />)}
     
     </div>
     </div>

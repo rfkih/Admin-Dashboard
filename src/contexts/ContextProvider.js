@@ -19,6 +19,7 @@ export const ContextProvider = ({children}) => {
     const [ role, setRole ] = useState('user')
     const [ userId, setUserId] = useState(0)
     const [ username, setUsername ] = useState('')
+    const [ currentColor, setCurrentColor] = useState('blue')
 
 
 
@@ -30,7 +31,7 @@ export const ContextProvider = ({children}) => {
     
     return (
         <StateContext.Provider
-            value={{ role, setRole, userId, setUserId, username, setUsername, activeMenu, setActiveMenu, initialState, screenSize, setScreenSize, isClicked, setIsClicked, handleClick, isLogin, setIsLogin }}
+            value={{ currentColor, setCurrentColor, role, setRole, userId, setUserId, username, setUsername, activeMenu, setActiveMenu, initialState, screenSize, setScreenSize, isClicked, setIsClicked, handleClick, isLogin, setIsLogin }}
         >
             {children}
         </StateContext.Provider>
