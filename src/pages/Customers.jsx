@@ -1,13 +1,15 @@
 import React,{useState, useEffect} from 'react'
-import { Typography,Container, Grid, Card, Avatar, CardContent,InputBase, Input, IconButton,  FormControl, InputLabel, MenuItem, Select, CardActions, Button, Paper,Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, CardHeader } from '@material-ui/core'
+import { Typography,Container, Grid, Card, Avatar, CardContent,InputBase, Input, IconButton,  OutlinedInput, InputAdornment,  FormControl, InputLabel, MenuItem, Select, CardActions, Button, Paper,Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, CardHeader } from '@material-ui/core'
 import {Header } from '../components'
 import axios from '../utils/axios'
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 
 function Customers() {
   const [ users, setUsers ] = useState([])
   const [ totalUsers, setTotalUsers] = useState(0)
   const [ userPerPage, setUserPerPage] = useState(10)
   const [page, setPage] = useState(0)
+  const[ keyword, setKeyword] = useState('')
 
  console.log(page);
 
@@ -32,10 +34,9 @@ const handleChangeUserPerPage = (event) => {
 
   const fetchUser = async () => {
     try {
-        const res = await axios.get("/users/admin",  {params: { pages:(`limit ${userPerPage} offset ${(page) * userPerPage}`) }} );
+        const res = await axios.get("/users/admin",  {params: { pages:(`limit ${userPerPage} offset ${(page) * userPerPage}`), keyword}} );
         const {data} = res;
         
-
         setUsers(data.result)      
         setTotalUsers(data.userCount[0].user_count)
        
@@ -44,20 +45,53 @@ const handleChangeUserPerPage = (event) => {
     }
 };
 
+  const handleChange = (e) => {
+    setKeyword( [e.target.name] = e.target.value ) 
+  }
+
+  const onSearchClick  = () => fetchUser()
+
 useEffect(() => {
   fetchUser();
-},[page, userPerPage])
+},[page, userPerPage, keyword])
+
+console.log(keyword);
 
 
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
       <Header category="Page" title="Customers"/>
-      <div className='w-full flex h-10 bg-slate-200'>
-          <p>Test</p>
+      <div className='w-full flex justify-end h-content rounded-t-lg bg-slate-200'>
+        <FormControl size="small"  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} variant='outlined'>
+          <InputLabel htmlFor="outlined-search">Search</InputLabel>
+          <OutlinedInput
+            id="outlined-search"
+            label="Search" 
+            name="keyword"
+            size="small" 
+            fullWidth
+            type={'text'}
+            value={keyword}
+            onChange={handleChange}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle Search"
+                  onClick={onSearchClick}
+                  // onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  <SearchOutlinedIcon/>
+                </IconButton>
+              </InputAdornment>
+            }
+          >
+          </OutlinedInput>
+        </FormControl>
       </div>
-      <TableContainer>
+      <TableContainer style={{ backgroundColor: "#F1F5F9"}}>
         <Table stickyHeader aria-label="styicky table" >
-          <TableHead>
+          <TableHead style={{ backgroundColor: "#F1F5F9"}}>
             <TableRow>
               {columnsUser.map((column, index) => (
                 <TableCell

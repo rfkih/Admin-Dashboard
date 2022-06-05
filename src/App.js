@@ -74,6 +74,7 @@ function App() {
                         <Route path='/register' element={<Register/>}/>
                         {/* Pages */}
                         <Route path='/customers' element={<Customers/>}/>
+                        <Route path='/transaction' element={<Transaction/>}/>
                     </Routes>
                 </div>
 
