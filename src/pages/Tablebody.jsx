@@ -2,19 +2,20 @@ import React,{useState, useRef, useEffect} from 'react'
 
 import { Typography,Container, Grid, TextField, Card, Avatar, CardContent,InputBase, Input, IconButton,  OutlinedInput, InputAdornment,  FormControl, InputLabel, MenuItem, Select, CardActions, Button, Paper,Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, CardHeader } from '@material-ui/core'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import {Link} from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import axios from '../utils/axios';
 
-function Tablebody({item, columnsProducts, editMode}) {
+function Tablebody({item, columnsProducts, editMode, fetchProducts, page, keyword, productsPerPage}) {
+    const params = useParams();
     const [ product, setProduct] = useState([])
-    const [isEdit, setIsEdit] = useState(false)
+    const [ loading, setLoading] = useState(true);
+    const [ isEdit, setIsEdit] = useState(false)
     const [ category, setCategory] = useState([])
-    const { id, category_id, productName, productDetails, productIMG, isLiquid, price } = item
+    const { id, category_id, productName, productDetails, productIMG, isLiquid, price } = product
     const btnRef = useRef()
+  // 
 
-
-  console.log(product)
-  console.log(item)
+ 
 
     category.map((name)=>{
         if (item.category_id == name.id) {
@@ -29,24 +30,41 @@ function Tablebody({item, columnsProducts, editMode}) {
  useEffect(() => {
     
     const closeEdit = (e) => {   
-       if (!btnRef.current?.contains(e.target)) {
-           setIsEdit(false)
-       }     
+   
+        if (!btnRef.current?.contains(e.target)) {       
+          setIsEdit(false)
+         
+      }          
     }
    document.body.addEventListener('click', closeEdit)
    return () => document.body.removeEventListener('click', closeEdit)
  }, [])
  
+
+ const onInputPress = (e) => {
+  
+  if (e.code === "Enter") {
+    updateProduct();
+    setIsEdit(false)
+  };
+};
    
 
     const editFunction = () => (
         setIsEdit(!isEdit)
+        
     )
 
     useEffect(() => {
+      
       fetchCategories()
-      setProduct(item)
+      
     },[])
+
+    useEffect(() => { 
+      setProduct(item)
+      setLoading(false)
+    },[page, keyword, productsPerPage])
 
     const fetchCategories = async () => {
       try {
@@ -59,16 +77,38 @@ function Tablebody({item, columnsProducts, editMode}) {
       }
   };
 
+  const updateProduct = async () => {
+        
+    const updatedProduct = {
+      id,
+      category_id,
+      productName,
+      productDetails,
+      productIMG,
+      isLiquid,
+      price,
+    };
+
+    console.log(updatedProduct)
+
+   
+  await axios
+  .put(`/products/${id}`, {updatedProduct, params: { id: id } } )
+  .then((res) => {
+    fetchProducts();
+    alert(res.data.message);
+  })
+  .catch((error) => console.log({ error }));
+};
 
 
-
+if (loading) {return <p>Loading</p>};
     return (
         <>
             {isEdit ? 
                   <TableRow  ref={btnRef} hover role="checkbox" tabIndex={-1} key={item.id}>
                     {columnsProducts.map((column) => {
                       const value = product[column.id];
-                      console.log(column.id)
                       if (column.id === "productIMG" ) {    
                         return (
                             <TableCell  key={column.id} align={column.align} >
@@ -103,7 +143,7 @@ function Tablebody({item, columnsProducts, editMode}) {
                       }  else {
                         return(                             
                             <TableCell key={column.id} align={column.align}>
-                              <TextField multiline key={item.id} name={column.id} value={value} onChange={handleChange} />
+                              <TextField multiline key={item.id} name={column.id} value={value} onChange={handleChange} onKeyDown={onInputPress} />
                             </TableCell> 
                         )
                       }
@@ -113,7 +153,7 @@ function Tablebody({item, columnsProducts, editMode}) {
             
                   <TableRow onClick={editMode ? editFunction : ''} hover role="checkbox" tabIndex={-1} key={item.id}>
                     {columnsProducts.map((column) => {
-                      const value = item[column.id];
+                      const value = product[column.id];
                       if (column.id === "productIMG" ) {    
                         return (
                             <TableCell key={column.id} align={column.align}  style={{ maxWidth:  100}}>

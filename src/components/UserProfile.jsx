@@ -39,7 +39,7 @@ function UserProfile() {
   const dispatch = useDispatch();
   const {currentColor, setIsLogin} = useStateContext();
 
-  console.log(email)
+
 
   const navigate = useNavigate();
 

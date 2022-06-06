@@ -12,7 +12,7 @@ function Customers() {
   const [page, setPage] = useState(0)
   const[ keyword, setKeyword] = useState('')
 
- console.log(page);
+
 
 
   const handleChangePageUser = (event, newPage) => {

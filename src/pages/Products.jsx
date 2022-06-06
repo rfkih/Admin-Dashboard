@@ -20,7 +20,7 @@ function Products() {
 
 
     const columnsProducts = [
-        // { id:'rownumber', label: 'No', align: 'center', minWidht: 40},
+        { id:'rownumber', label: 'No', align: 'center', minWidht: 40},
         { id:'productIMG', label: 'Image', align: 'center', minWidth: 100},
         { id:'productName', label: 'Name', align: 'center', minWidth: 60},  
         { id:'categoryName', label: 'Category', align: 'center', minWidth: 60},   
@@ -60,6 +60,8 @@ function Products() {
       useEffect(() => {
           fetchProducts()
       },[page, productsPerPage, keyword])
+
+  
 
 
 
@@ -122,7 +124,7 @@ function Products() {
                 </TableHead>
                 <TableBody>
                     {products.map((item, index) => (
-                        <Tablebody key={index} item={item} editMode={editMode} columnsProducts={columnsProducts}/>
+                        <Tablebody key={index} page={page} productsPerPage={productsPerPage} keyword={keyword} item={item} fetchProducts={fetchProducts} editMode={editMode} columnsProducts={columnsProducts}/>
                     ))}
                 </TableBody>
             </Table>
