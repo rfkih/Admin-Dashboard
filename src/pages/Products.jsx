@@ -20,10 +20,11 @@ function Products() {
 
 
     const columnsProducts = [
-        { id:'rownumber', label: 'No', align: 'center', minWidht: 40},
-        { id:'productIMG', label: 'Image', align: 'center', minWidth: 80},
-        { id:'productName', label: 'Name', align: 'center', minWidth: 60},    
-        { id:'productDetails', label: 'Details', align: 'center', minWidth: 60},
+        // { id:'rownumber', label: 'No', align: 'center', minWidht: 40},
+        { id:'productIMG', label: 'Image', align: 'center', minWidth: 100},
+        { id:'productName', label: 'Name', align: 'center', minWidth: 60},  
+        { id:'categoryName', label: 'Category', align: 'center', minWidth: 60},   
+        { id:'productDetails', label: 'Details', align: 'center', minWidth: 30},
         { id:'price', label: 'price', align: 'center', minWidth: 60},
         { id:'isLiquid', label: 'Liquid' ,align: 'center', minWidth: 60},
     ]
@@ -78,7 +79,7 @@ function Products() {
             </div>
             <div className='mx-2'>
               <FormControl size="small"  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} variant='outlined'>
-                <InputLabel htmlFor="outlined-search">Search Invoice</InputLabel>
+                <InputLabel htmlFor="outlined-search">Search Products</InputLabel>
                 <OutlinedInput
                   id="outlined-search"
                   label="Search Invoice" 
@@ -93,7 +94,6 @@ function Products() {
                       <IconButton
                         aria-label="toggle Search"
                         // onClick={onSearchClick}
-                        // onMouseDown={handleMouseDownPassword}
                         edge="end"
                       >
                         <SearchOutlinedIcon/>
@@ -122,7 +122,7 @@ function Products() {
                 </TableHead>
                 <TableBody>
                     {products.map((item, index) => (
-                        <Tablebody key={index} item={item} columnsProducts={columnsProducts}/>
+                        <Tablebody key={index} item={item} editMode={editMode} columnsProducts={columnsProducts}/>
                     ))}
                 </TableBody>
             </Table>
