@@ -120,7 +120,15 @@ function Products() {
                     ))}
                   </TableRow>
                 </TableHead>
-                <Tablebody editMode={editMode} setEditMode={setEditMode} products={products} columnsProducts={columnsProducts}/>
+                <TableBody>
+                    {products.map((item, index) => (
+                        <Tablebody key={index} item={item} columnsProducts={columnsProducts}/>
+                    ))
+
+                    }
+
+                </TableBody>
+                {/* <Tablebody editMode={editMode} setEditMode={setEditMode} products={products} columnsProducts={columnsProducts}/> */}
             </Table>
         </TableContainer>
         <TablePagination

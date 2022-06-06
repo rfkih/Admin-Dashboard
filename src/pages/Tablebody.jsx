@@ -4,23 +4,20 @@ import { Typography,Container, Grid, TextField, Card, Avatar, CardContent,InputB
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import {Link} from 'react-router-dom'
 
-function Tablebody({products, columnsProducts, editMode}) {
+function Tablebody({item, columnsProducts}) {
     const [isEdit, setIsEdit] = useState(false)
 
     const editFunction = () => (
         setIsEdit(!isEdit)
     )
 
-console.log(editMode)
+
 
 
     return (
         <>
             {isEdit ? 
-            <TableBody>
-              {products.map((item, index) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
                     {columnsProducts.map((column) => {
                       const value = item[column.id];
                       if (column.id === "productIMG" ) {    
@@ -52,19 +49,15 @@ console.log(editMode)
                         return(
                               
                             <TableCell key={column.id} align={column.align}>
-                              <TextField key={index}/>
+                              <TextField key={item.id}/>
                             </TableCell> 
                         )
                       }
                     })}
                   </TableRow>
-                )
-              })}
-            </TableBody>  :
-              <TableBody>
-              {products.map((item, index) => {
-                return (
-                  <TableRow onClick={editMode && editFunction} hover role="checkbox" tabIndex={-1} key={index}>
+                :
+            
+                  <TableRow onClick={editFunction} hover role="checkbox" tabIndex={-1} key={item.id}>
                     {columnsProducts.map((column) => {
                       const value = item[column.id];
                       if (column.id === "productIMG" ) {    
@@ -94,9 +87,6 @@ console.log(editMode)
                       } 
                     })}
                   </TableRow>
-                )
-              })}
-            </TableBody>
         }
       </>
     )
