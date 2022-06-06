@@ -6,20 +6,22 @@ import moment from 'moment'
 import {Link} from 'react-router-dom'
 
 import {Header} from '../components'
+import {Tablebody} from './'
 
 function Products() {
-    const [ sort, setSort] = useState('order by created_at desc')
+    const [ sort, setSort] = useState('')
     const [ page, setPage] = useState(0)
     const [ keyword, setKeyword] = useState('')
     const [ countProduct, setCountProduct] = useState(0)
     const [ products, setProducts ] = useState([])
+    const [ productsPerPage, setProductsPerPage] = useState(10)
+    const [ editMode, setEditMode] = useState(false)
 
-    console.log(products)
 
 
     const columnsProducts = [
-        { id:'rownumber', label: 'No', align: 'center', minWidht: 10},
-        { id:'productIMG', label: 'Image', align: 'center', minWidth: 60},
+        { id:'rownumber', label: 'No', align: 'center', minWidht: 40},
+        { id:'productIMG', label: 'Image', align: 'center', minWidth: 80},
         { id:'productName', label: 'Name', align: 'center', minWidth: 60},    
         { id:'productDetails', label: 'Details', align: 'center', minWidth: 60},
         { id:'price', label: 'price', align: 'center', minWidth: 60},
@@ -27,9 +29,23 @@ function Products() {
     ]
 
 
+    const handleChange = (e) => {
+        setKeyword( [e.target.name] = e.target.value ) 
+      }
+
+
+      const handleChangePageProducts = (event, newPage) => {
+        setPage(newPage)
+      }
+      const handleChangeProductsPerPage = (event) => {
+        setProductsPerPage(+event.target.value);
+        setPage(0)
+      }
+
+
     const fetchProducts = async () => {
         try {
-            const res = await axios.get("/products", )
+            const res = await axios.get("/products", {params: { pages:(`limit ${productsPerPage} offset ${(page) * productsPerPage}`), keyword , sort}} )
             .then((res=>{
               const { data } = res;
               setProducts(data.result)
@@ -42,46 +58,7 @@ function Products() {
 
       useEffect(() => {
           fetchProducts()
-      },[])
-
-    const Tablehost = ({products, columnsProducts}) => {
-
-        return (
-            <TableBody>
-            {products.map((item, index) => {
-              return (
-                <TableRow component={Link} to={`/transactiondetails/${item.id}`} hover role="checkbox" tabIndex={-1} key={index}>
-                  {columnsProducts.map((column) => {
-                    const value = item[column.id];
-                    if (column.id === "productIMG" ) {
-                      
-                      return (
-                          <TableCell key={column.id} align={column.align}  style={{ maxWidth:  100}}>
-                              <div className='flex items-center'>
-                              <img
-                                className=' rounded-md h-20 w-20 mr-2'
-                                src={value}
-                                alt="Product Image"
-                                />
-                              </div>    
-                              
-                          </TableCell>     
-                      )  
-                      } else {
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {value}
-                        </TableCell>                                      
-                      )
-
-                  }
-                  })}
-                </TableRow>
-              )
-            })}
-          </TableBody>
-        )
-    }
+      },[page, productsPerPage, keyword])
 
 
 
@@ -133,10 +110,18 @@ function Products() {
                     ))}
                   </TableRow>
                 </TableHead>
-                <Tablehost products={products} columnsProducts={columnsProducts}/>
+                <Tablebody editMode={editMode} setEditMode={setEditMode} products={products} columnsProducts={columnsProducts}/>
             </Table>
-
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 20, 30]}
+          component="div"
+          count={countProduct}
+          rowsPerPage={productsPerPage}
+          page={page}
+          onPageChange={handleChangePageProducts}
+          onRowsPerPageChange={handleChangeProductsPerPage}
+      />
     </div>
   )
 }
