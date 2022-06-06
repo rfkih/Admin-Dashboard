@@ -29,6 +29,10 @@ export const links = [
       title: 'Pages',
       links: [
         {
+          name: 'products',
+          icon: <FiStar />,
+        },
+        {
           name: 'orders',
           icon: <AiOutlineShoppingCart />,
         },
@@ -40,6 +44,7 @@ export const links = [
           name: 'customers',
           icon: <RiContactsLine />,
         },
+       
       ],
     },
     {

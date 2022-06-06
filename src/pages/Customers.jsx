@@ -3,6 +3,7 @@ import { Typography,Container, Grid, Card, Avatar, CardContent,InputBase, Input,
 import {Header } from '../components'
 import axios from '../utils/axios'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import {Link} from 'react-router-dom'
 
 function Customers() {
   const [ users, setUsers ] = useState([])
@@ -61,33 +62,35 @@ console.log(keyword);
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
       <Header category="Page" title="Customers"/>
-      <div className='w-full flex justify-end h-content rounded-t-lg bg-slate-200'>
-        <FormControl size="small"  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} variant='outlined'>
-          <InputLabel htmlFor="outlined-search">Search</InputLabel>
-          <OutlinedInput
-            id="outlined-search"
-            label="Search" 
-            name="keyword"
-            size="small" 
-            fullWidth
-            type={'text'}
-            value={keyword}
-            onChange={handleChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle Search"
-                  onClick={onSearchClick}
-                  // onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  <SearchOutlinedIcon/>
-                </IconButton>
-              </InputAdornment>
-            }
-          >
-          </OutlinedInput>
-        </FormControl>
+      <div className='w-full flex flex-wrap justify-end h-content rounded-t-lg bg-slate-200'>
+        <div className='mx-2'>
+          <FormControl size="small"  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} variant='outlined'>
+            <InputLabel htmlFor="outlined-search">Search</InputLabel>
+            <OutlinedInput
+              id="outlined-search"
+              label="Search" 
+              name="keyword"
+              size="small" 
+              fullWidth
+              type={'text'}
+              value={keyword}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle Search"
+                    onClick={onSearchClick}
+                    // onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    <SearchOutlinedIcon/>
+                  </IconButton>
+                </InputAdornment>
+              }
+            >
+            </OutlinedInput>
+          </FormControl>
+        </div>
       </div>
       <TableContainer style={{ backgroundColor: "#F1F5F9"}}>
         <Table stickyHeader aria-label="styicky table" >
@@ -107,7 +110,7 @@ console.log(keyword);
           <TableBody>
                 {users.map((item, index) => {
                   return (
-                    <TableRow  hover role="checkbox" tabIndex={-1} key={index}>
+                    <TableRow component={Link} to={`/usertransaction/${item.id}`} hover role="checkbox" tabIndex={-1} key={index}>
                       {columnsUser.map((column, index) => {
                         const value = item[column.id];
                         const image = item.photo

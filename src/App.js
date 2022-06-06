@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { keepLoginAction } from './stores/actions';
 import { useStateContext } from './contexts/ContextProvider'
 import {Navbar, Footer, Sidebar} from './components'
-import { Customers, Dashboard, Orders, Register, Transaction, Test, Login } from './pages'
+import { Customers, Dashboard, Orders, Register, Transaction, Test, Login, Products } from './pages'
 import './App.css'
 
 function App() {
@@ -75,6 +75,7 @@ function App() {
                         {/* Pages */}
                         <Route path='/customers' element={<Customers/>}/>
                         <Route path='/transaction' element={<Transaction/>}/>
+                        <Route path='/products' element={<Products/>}/>
                     </Routes>
                 </div>
 

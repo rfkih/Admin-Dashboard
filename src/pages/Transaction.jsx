@@ -4,6 +4,7 @@ import { Typography,Container, Grid, Card, Avatar, CardContent,InputBase, Input,
 import {Header} from '../components'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import moment from 'moment'
+import {Link} from 'react-router-dom'
 
 function Transaction() {
   const [ transactions, setTransactions ] = useState([])
@@ -12,9 +13,12 @@ function Transaction() {
   const [ sort, setSort] = useState('order by created_at desc')
   const [ page, setPage] = useState(0)
   const [ keyword, setKeyword] = useState('')
+  const [ status, setStatus] = useState('')
  
 
-
+  const handleChangeStatus = (e) => {
+    setStatus(e.target.value)
+  };
 
 
   const handleChange = (e) => {
@@ -33,7 +37,7 @@ function Transaction() {
 
   const fetchTransaction = async () => {
     try {
-        const res = await axios.get("/transaction",  {params: { pages:(`limit ${transactionsPerPage} offset ${(page) * transactionsPerPage}`), keyword , sort}} );
+        const res = await axios.get("/transaction",  {params: { pages:(`limit ${transactionsPerPage} offset ${(page) * transactionsPerPage}`), keyword , sort, status}} );
         const {data} = res;
   
         setTransactions(data.result)      
@@ -54,44 +58,66 @@ const handleChangeTransactionsPerPage = (event) => {
 
 useEffect(() => {
   fetchTransaction()
-},[keyword, transactionsPerPage, page])
+},[keyword, transactionsPerPage, page, status])
 
 
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
       <Header category="Page" title="Transaction"/>
-      <div className='w-full flex justify-end h-content rounded-t-lg bg-slate-200'>
-        <FormControl size="small"  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} variant='outlined'>
-          <InputLabel htmlFor="outlined-search">Search Invoice</InputLabel>
-          <OutlinedInput
-            id="outlined-search"
-            label="Search Invoice" 
-            name="keyword"
-            size="small" 
-            fullWidth
-            type={'text'}
-            value={keyword}
-            onChange={handleChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle Search"
-                  // onClick={onSearchClick}
-                  // onMouseDown={handleMouseDownPassword}
-                  edge="end"
+      <div className='w-full flex flex-wrap justify-end h-content rounded-t-lg bg-slate-200'>
+        <div className='mx-2'>     
+          <FormControl >
+            <InputLabel id="range-select-label">Status</InputLabel>
+                <Select
+                    displayEmpty
+                    labelId="range-select-label"
+                    id="range-select"
+                    label="Status"
+                    name="status"
+                    defaultValue=""
+                    onChange={handleChangeStatus}
                 >
-                  <SearchOutlinedIcon/>
-                </IconButton>
-              </InputAdornment>
-            }
-          >
-          </OutlinedInput>
-        </FormControl>
+                    <MenuItem key={1} value={""} >Status</MenuItem>
+                    <MenuItem key={2} value={"and transactionStatus = 'paid'"} >Paid</MenuItem>
+                    <MenuItem key={3} value={"and transactionStatus = 'failed'"} >Failed</MenuItem>
+                    <MenuItem key={4} value={"and transactionStatus = 'sent'"} >Sent</MenuItem>
+                    <MenuItem key={5} value={"and transactionStatus = 'complete'"}>Complete</MenuItem>
+                    </Select>
+          </FormControl>
+        </div>
+        <div className='mx-2'>
+          <FormControl size="small"  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} variant='outlined'>
+            <InputLabel htmlFor="outlined-search">Search Invoice</InputLabel>
+            <OutlinedInput
+              id="outlined-search"
+              label="Search Invoice" 
+              name="keyword"
+              size="small" 
+              fullWidth
+              type={'text'}
+              value={keyword}
+              onChange={handleChange}
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle Search"
+                    // onClick={onSearchClick}
+                    // onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                  >
+                    <SearchOutlinedIcon/>
+                  </IconButton>
+                </InputAdornment>
+              }
+            >
+            </OutlinedInput>
+          </FormControl>
+        </div>
       </div>
       <TableContainer style={{ backgroundColor: "#F1F5F9"}}>
         <Table stickyHeader area-label="sticky table">
           <TableHead>
-            <TableRow>
+            <TableRow  >
               {columnsTransaction.map((column, index) => (
                 <TableCell
                   key={index}
@@ -106,7 +132,7 @@ useEffect(() => {
           <TableBody>
             {transactions.map((item, index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                <TableRow component={Link} to={`/transactiondetails/${item.id}`} hover role="checkbox" tabIndex={-1} key={index}>
                   {columnsTransaction.map((column) => {
                     const value = item[column.id];
                     if (column.id === "created_at" ) {
@@ -120,9 +146,7 @@ useEffect(() => {
                       return (
                           <TableCell key={column.id} align={column.align}>
                           {value}
-                      </TableCell>
-                      
-                          
+                      </TableCell>                                      
                       )
 
                   }
