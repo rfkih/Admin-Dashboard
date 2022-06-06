@@ -65,7 +65,17 @@ function Products() {
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
         <Header category="Pages" title="Products"/>
-        <div className='w-full flex flex-wrap justify-end h-content rounded-t-lg bg-slate-200'>
+        <div className='w-full flex items-center flex-wrap justify-end h-content rounded-t-lg bg-slate-200'>
+            <div className='mx-2 w-5 h-content'>
+                <button
+                    type="button"
+                    className='rounded-sm hover:bg-slate-300 p-1 '
+                    onClick={() => setEditMode(!editMode)}
+                >
+                    {editMode ? <p>Save</p> : <p>Edit</p>}
+                </button>
+
+            </div>
             <div className='mx-2'>
               <FormControl size="small"  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} variant='outlined'>
                 <InputLabel htmlFor="outlined-search">Search Invoice</InputLabel>
