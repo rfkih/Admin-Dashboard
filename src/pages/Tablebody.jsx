@@ -13,16 +13,12 @@ function Tablebody({item, columnsProducts}) {
     
  useEffect(() => {
     
-
-    const closeEdit = (e) => {
-        console.log(btnRef.current.contains(e.target));
+    const closeEdit = (e) => {   
        if (!btnRef.current.contains(e.target)) {
            setIsEdit(false)
-       }
-        
+       }     
     }
    document.body.addEventListener('click', closeEdit)
-
    return () => document.body.removeEventListener('click', closeEdit)
  }, [])
  

@@ -87,7 +87,7 @@ function Products() {
                   fullWidth
                   type={'text'}
                   value={keyword}
-                //   onChange={handleChange}
+                  onChange={handleChange}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -123,12 +123,8 @@ function Products() {
                 <TableBody>
                     {products.map((item, index) => (
                         <Tablebody key={index} item={item} columnsProducts={columnsProducts}/>
-                    ))
-
-                    }
-
+                    ))}
                 </TableBody>
-                {/* <Tablebody editMode={editMode} setEditMode={setEditMode} products={products} columnsProducts={columnsProducts}/> */}
             </Table>
         </TableContainer>
         <TablePagination
