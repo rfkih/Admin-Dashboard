@@ -5,23 +5,28 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import {Link, useParams} from 'react-router-dom'
 import axios from '../utils/axios';
 
-function Tablebody({item, columnsProducts, editMode, fetchProducts, page, keyword, productsPerPage}) {
+const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keyword, productsPerPage}) => {
     const params = useParams();
     const [ product, setProduct] = useState([])
-    const [ loading, setLoading] = useState(true);
     const [ isEdit, setIsEdit] = useState(false)
     const [ category, setCategory] = useState([])
     const { id, category_id, productName, productDetails, productIMG, isLiquid, price } = product
     const btnRef = useRef()
-  // 
-
  
 
+
+
     category.map((name)=>{
-        if (item.category_id == name.id) {
+        if (item.category_id == name.id) {  
             item.categoryName = name.categoryName
         }
     })
+
+    category.map((name)=>{
+      if (product.category_id == name.id) {  
+          product.categoryName = name.categoryName
+      }
+  })
 
     const handleChange = (e) => {
       setProduct({ ...product, [e.target.name]: e.target.value });
@@ -51,20 +56,42 @@ function Tablebody({item, columnsProducts, editMode, fetchProducts, page, keywor
    
 
     const editFunction = () => (
+      fetchProductById(),
         setIsEdit(!isEdit)
         
     )
 
+ 
+    const fetchProductById = async () => {
+
+      try {
+        console.log(item.id)
+          const res = await axios.get(`/products/${item.id}`,{ params: { id: item.id } } )
+          const {data} = res
+          setCategory(data.category)
+          setProduct(data.result[0]);
+          // setOnCancelData(data.result[0])
+          
+      } catch (err) {
+      console.log({ err });
+          
+      }
+  }
+
     useEffect(() => {
+      
       
       fetchCategories()
       
     },[])
 
-    useEffect(() => { 
-      setProduct(item)
-      setLoading(false)
-    },[page, keyword, productsPerPage])
+    useEffect(() => {
+      if (isEdit) {
+        fetchProductById()
+      }
+    },[isEdit])
+
+
 
     const fetchCategories = async () => {
       try {
@@ -102,7 +129,6 @@ function Tablebody({item, columnsProducts, editMode, fetchProducts, page, keywor
 };
 
 
-if (loading) {return <p>Loading</p>};
     return (
         <>
             {isEdit ? 
@@ -153,7 +179,7 @@ if (loading) {return <p>Loading</p>};
             
                   <TableRow onClick={editMode ? editFunction : ''} hover role="checkbox" tabIndex={-1} key={item.id}>
                     {columnsProducts.map((column) => {
-                      const value = product[column.id];
+                      const value = item[column.id];
                       if (column.id === "productIMG" ) {    
                         return (
                             <TableCell key={column.id} align={column.align}  style={{ maxWidth:  100}}>
