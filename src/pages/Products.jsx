@@ -32,6 +32,7 @@ function Products() {
 
     const handleChange = (e) => {
         setKeyword( [e.target.name] = e.target.value ) 
+        setPage(0)
       }
 
 

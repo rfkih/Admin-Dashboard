@@ -78,12 +78,10 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
       }
   }
 
-    useEffect(() => {
+    useEffect(() => {      
+    fetchCategories()
       
-      
-      fetchCategories()
-      
-    },[])
+    },[page, keyword])
 
     useEffect(() => {
       if (isEdit) {
@@ -116,7 +114,12 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
       price,
     };
 
-    console.log(updatedProduct)
+    const fileSelectedHandler = (e) => {
+      let uploaded = e.target.files[0]
+      // setImage(URL.createObjectURL(uploaded))
+      // setSelectedFile(uploaded)
+    }
+
 
    
   await axios
@@ -135,7 +138,16 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                   <TableRow  ref={btnRef} hover role="checkbox" tabIndex={-1} key={item.id}>
                     {columnsProducts.map((column) => {
                       const value = product[column.id];
-                      if (column.id === "productIMG" ) {    
+                      const number = item[column.id]
+
+                      if (column.id === 'rownumber') {
+                        console.log(column.id)
+                        return (
+                          <TableCell  key={column.id} align={column.align}>
+                            {number}
+                          </TableCell>     
+                        )
+                      } else if (column.id === "productIMG" ) {    
                         return (
                             <TableCell  key={column.id} align={column.align} >
                                 <div className='flex items-center'>
@@ -175,8 +187,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                       }
                     })}
                   </TableRow>
-                :
-            
+                :         
                   <TableRow onClick={editMode ? editFunction : ''} hover role="checkbox" tabIndex={-1} key={item.id}>
                     {columnsProducts.map((column) => {
                       const value = item[column.id];
