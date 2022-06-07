@@ -10,6 +10,9 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
     const [ product, setProduct] = useState([])
     const [ isEdit, setIsEdit] = useState(false)
     const [ category, setCategory] = useState([])
+    const [ selectedFile, setSelectedFile]= useState({})
+    const [ fileStatus, setFileStatus] = useState(false)
+    
     const { id, category_id, productName, productDetails, productIMG, isLiquid, price } = product
     const btnRef = useRef()
  
@@ -69,8 +72,9 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
           const res = await axios.get(`/products/${item.id}`,{ params: { id: item.id } } )
           const {data} = res
           setCategory(data.category)
-          setProduct(data.result[0]);
-          // setOnCancelData(data.result[0])
+          setProduct(data.result[0])
+          setSelectedFile(data.result[0].productName);
+    
           
       } catch (err) {
       console.log({ err });
@@ -88,6 +92,37 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
         fetchProductById()
       }
     },[isEdit])
+
+    const fileSelectedHandler = (e) => {
+      setFileStatus(false)
+      console.log(e.target)
+      let uploaded = e.target.files[0]
+      const ImageUrl = URL.createObjectURL(uploaded)
+      setProduct({ ...product, productIMG: ImageUrl });
+      setSelectedFile(uploaded)
+      setFileStatus(true)
+    }
+
+    
+
+  
+
+    const fileUploadHandler = () => {
+    
+      
+        const fd = new FormData();
+        fd.append("productPhoto", selectedFile)
+        axios.post("/products/upload", fd)
+        .then((res) => {
+          const productIMG = res.data.image  
+          setProduct({ ...product, productIMG })
+          setFileStatus(false)
+          alert("image uploaded")
+          updateProduct()
+          })
+        .catch((error) => console.log({ error }));
+      } 
+    
 
 
 
@@ -113,12 +148,6 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
       isLiquid,
       price,
     };
-
-    const fileSelectedHandler = (e) => {
-      let uploaded = e.target.files[0]
-      // setImage(URL.createObjectURL(uploaded))
-      // setSelectedFile(uploaded)
-    }
 
 
    
@@ -147,16 +176,33 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                             {number}
                           </TableCell>     
                         )
-                      } else if (column.id === "productIMG" ) {    
+                      } else if (column.id === "productIMG" ) {   
+                        
+                        
                         return (
                             <TableCell  key={column.id} align={column.align} >
-                                <div className='flex items-center'>
-                                <img
-                                  className=' rounded-md h-20 w-24 mr-2'
-                                  src={value}
-                                  alt="Product Image"
+                                <div className='flex flex-col items-center'>
+                                  <input
+                                    onChange={fileSelectedHandler}
+                                    className='hidden'
+                                    type="file"
+                                    id="upload-file"                  
                                   />
-                                </div>              
+                                  <label htmlFor='upload-file'>
+                                    <img
+                                      className={fileStatus ? `rounded-t-md h-16 w-24 mr-2` : 'rounded-md h-20 w-24 mr-2'}
+                                      src={value}
+                                      alt="Product Image"
+                                      />
+                                  </label>
+                                  {fileStatus && 
+                                  <button
+                                    className=' h-5 rounded-b-md w-full bg-slate-300'
+                                    onClick={fileUploadHandler}
+                                  >
+                                    <p className='text-xs'>Save</p>
+                                  </button>}
+                                </div> 
                             </TableCell>     
                         )  
                       } else if(column.id === "isLiquid") {
