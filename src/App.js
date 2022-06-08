@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { keepLoginAction } from './stores/actions';
 import { useStateContext } from './contexts/ContextProvider'
 import {Navbar, Footer, Sidebar} from './components'
-import { Customers, Dashboard, Orders, Register, Transaction, Test, Login, Products } from './pages'
+import { Customers, Dashboard, Orders, Register, Transaction, Login, Products, Profile } from './pages'
 import './App.css'
 
 function App() {
@@ -20,9 +20,9 @@ function App() {
     if (userLocalStorage) {
       const userData = JSON.parse(userLocalStorage);
 
-      const { id, username, role, tokens, photo, email } = userData;
+      const { id, username, name, role, tokens, photo, email } = userData;
 
-      dispatch(keepLoginAction({ id, username, role, tokens, photo, email }));
+      dispatch(keepLoginAction({ id, username, name, role, tokens, photo, email }));
       setIsLogin(true)
     }
    
@@ -76,6 +76,7 @@ function App() {
                         <Route path='/customers' element={<Customers/>}/>
                         <Route path='/transaction' element={<Transaction/>}/>
                         <Route path='/products' element={<Products/>}/>
+                        <Route path='profile' element={<Profile/>}/>
                     </Routes>
                 </div>
 

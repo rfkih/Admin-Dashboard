@@ -1,6 +1,7 @@
 const init = {
     id: 0,
     username: "",
+    name:'',
     role: "",
     token: "",
     photo: "",
@@ -17,6 +18,7 @@ const init = {
           ...state,
           id: action.payload.id,
           username: action.payload.username,
+          name: action.payload.name,
           role: action.payload.role,
           token: action.payload.token,
           email: action.payload.email,

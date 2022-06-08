@@ -1,19 +1,19 @@
-  export const loginAction = ({ id, username, role, token, photo, email }) => {
+  export const loginAction = ({ id, username, role, token, photo, email, name }) => {
       localStorage.setItem(
         "userData",
-        JSON.stringify({ id, username, role, token, photo, email })
+        JSON.stringify({ id, username, name, role, token, photo, email })
       );
       
       return {
         type: "LOGIN_SUCCESS",
-        payload: { id, username, role, token, photo, email },
+        payload: { id, username, name, role, token, photo, email },
       };
     };
 
-  export const keepLoginAction = ({ id, username, role, token, photo, email }) => {
+  export const keepLoginAction = ({ id, username, name, role, token, photo, email }) => {
     return {
       type: "LOGIN_SUCCESS",
-      payload: { id, username, role, token, photo, email },
+      payload: { id, username, name, role, token, photo, email },
     };
   };
   

@@ -3,6 +3,7 @@ import { Typography,Container, Grid, Card, Avatar, CardContent,InputBase, Input,
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from '../utils/axios'
 import moment from 'moment'
+import ModeEditIcon from '@mui/icons-material/ModeEdit';
 import {Link} from 'react-router-dom'
 
 import {Header} from '../components'
@@ -69,14 +70,14 @@ function Products() {
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
         <Header category="Pages" title="Products"/>
-        <div className='w-full flex items-center flex-wrap justify-end h-content rounded-t-lg bg-slate-200'>
-            <div className='mx-2 w-5 h-content'>
+        <div className='w-full flex items-center flex-wrap justify-between h-content rounded-t-lg bg-slate-200'>
+            <div className='mx-3 w-5 h-content'>
                 <button
                     type="button"
                     className='rounded-sm hover:bg-slate-300 p-1 '
                     onClick={() => setEditMode(!editMode)}
                 >
-                    {editMode ? <p>Save</p> : <p>Edit</p>}
+                    {editMode ? <div className='flex items-center text-xl text-slate-400'><ModeEditIcon fontSize='small'/> <p classNames='text-slate-400'>Edit</p></div> : <div className='flex items-center text-xl text-slate-900'><ModeEditIcon  fontSize='small' /> <p className='text-slate-900'>Edit</p></div>}
                 </button>
 
             </div>

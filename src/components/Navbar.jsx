@@ -33,7 +33,7 @@ const NavButton = ({title, customFunc, icon, color, dotColor}) => (
 )
 
 function Navbar() {
-    const { username, role, id, photo } = useSelector((state) => {
+    const { username, role, id, photo, name } = useSelector((state) => {
         return state.auth;
       });
     const { activeMenu, setActiveMenu, currentColor, isClicked, setIsClicked, setScreenSize, screenSize, handleClick } = useStateContext();
@@ -83,7 +83,7 @@ function Navbar() {
                 <p>
                     <span className="text-gray-600 text-14">Hi,</span>{' '}
                     <span className="text-gray-600 font-bold ml-1 text-14">
-                      Rifki
+                      {name}
                     </span>
                 </p>
                 <MdKeyboardArrowDown className="text-gray-400 text-14" />

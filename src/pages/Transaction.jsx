@@ -64,7 +64,7 @@ useEffect(() => {
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
       <Header category="Page" title="Transaction"/>
-      <div className='w-full flex flex-wrap justify-end h-content rounded-t-lg bg-slate-200'>
+      <div className='w-full flex flex-wrap flex-col-reverse justify-end h-content rounded-t-lg bg-slate-200'>
         <div className='mx-2'>     
           <FormControl >
             <InputLabel id="range-select-label">Status</InputLabel>

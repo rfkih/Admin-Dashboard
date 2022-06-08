@@ -72,7 +72,7 @@ function Login() {
     <div className=" flexlogin flex-col  header h-screen static w-full">  
       <div className='flexlogin flex-col md:flex-row md:absolute  w-full '>
         <div className='flex flex-col justify-center items-center md:bg-white  md:h-screen text-2xl w-full  md:w-4/6 '>
-          <div className='flexlogin  flex-col justify-center items-center mt-10 md:bg-white-400 w-4/6'>
+          <div className='flexlogin  flex-col justify-center items-center mt-10 md:bg-white-400 w-4/6' style={{ zIndex: '100'}} >
             <h1 className=' text-2xl xl:text-5xl my-4 md:text-sky-700 font-semibold'>Login to Your Account</h1>
             <div className='flexlogin flex-col w-full md:w-4/5 p-5 justify-around'>
               <TextField onChange={handleChange}  style={{margin : '0.5em', backgroundColor : 'white' , borderRadius: '5px' }} size="small" type="text" id="Username" fullWidth label="Username" variant="outlined" name='username'  />
@@ -117,7 +117,7 @@ function Login() {
           </div>
         </div>
         <div className=' w-full relative  md:w-2/6'>
-          <div className=' flexlogin flex-col mx-4'>
+          <div className=' flexlogin flex-col mx-4'  style={{ zIndex: '1000'}} >
             <h1 className='font-semibold '> New Here ?</h1>
             <p className='text-2xl m-4 text-white'> Sign up and discover a great amount of new opportunities!</p>
             <button
@@ -126,6 +126,7 @@ function Login() {
                 className={`text-md mt-4 w-3/5 rounded-xl  py-2 mx-4`}
                 component={Link}
                 to='/register'
+               
               >
                 <NavLink to='/register' >
                   Register

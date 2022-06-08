@@ -12,6 +12,7 @@ const userProfileData = [
   {
     icon: <BsCurrencyDollar />,
     title: 'My Profile',
+    link: 'profile',
     desc: 'Account Settings',
     iconColor: '#03C9D7',
     iconBg: '#E5FAFB',
@@ -19,6 +20,7 @@ const userProfileData = [
   {
     icon: <BsShield />,
     title: 'My Inbox',
+    link: 'profile',
     desc: 'Messages & Emails',
     iconColor: 'rgb(0, 194, 146)',
     iconBg: 'rgb(235, 250, 242)',
@@ -26,6 +28,7 @@ const userProfileData = [
   {
     icon: <FiCreditCard />,
     title: 'My Tasks',
+    link: 'profile',
     desc: 'To-do and Daily Tasks',
     iconColor: 'rgb(255, 244, 229)',
     iconBg: 'rgb(254, 201, 15)',
@@ -76,11 +79,12 @@ function UserProfile() {
       </div>
       <div>
         {userProfileData.map((item, index) => (
-          <div key={index} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D] ">
+          <Link key={index}  to={`/${item.link}`} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D] ">
             <button
               type='button'
               style={{color: item.iconColor, backgroundColor: item.iconBg}}
               className="text-xl rounded-lg p-3 hover:bg-light-gray"
+              
             >
               {item.icon}
             </button>
@@ -89,7 +93,7 @@ function UserProfile() {
               <p className='text-gray-500 text-sm dark:text-gray-400'>{item.desc}</p>
             </div>
 
-          </div>
+          </Link>
         ))}
       </div>
       <div className='mt-5'>
