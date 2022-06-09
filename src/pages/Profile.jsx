@@ -3,6 +3,7 @@ import {Header} from '../components'
 import  {useSelector, useDispatch} from 'react-redux'
 import { Dialog, TextField, DialogActions, DialogContent, RadioGroup, FormControlLabel, Radio, Button, DialogContentText, DialogTitle} from '@mui/material'
 import axios from '../utils/axios'
+
 import {photoAction} from '../stores/actions'
 import { width } from '@mui/system'
 import { Direction } from '@syncfusion/ej2-react-charts'
@@ -10,6 +11,7 @@ import { Direction } from '@syncfusion/ej2-react-charts'
 
 function Profile() {
   const [ userData, setUserData] = useState([])
+  const [ initData, setInitData] = useState([])
   const dispatch = useDispatch();
   const [ fileUpdate, setFileUpdate] = useState(false)
   const [ fileStatus, setFileStatus] = useState(false)
@@ -32,7 +34,7 @@ function Profile() {
         const res = await axios.get(`/users/${id}`,{ params: { id: id } } )
         const {data} = res
         setUserData(data[0])
-        
+        setInitData(data[0])
     } catch (err) {
     console.log({ err });
         
@@ -112,8 +114,12 @@ await axios
 .put(`/users/update/${id}`, {updatedUserData, params: { id: id } } )
 .then((res) => {
   alert(res.data.message);
+  fetchUserById()
 })
-.catch((error) => console.log({ error }));
+.catch((error) => {
+  setUserData(initData)
+  alert(error.response.data.message)
+} );
 };
 
 
@@ -138,6 +144,7 @@ const NameDialog = () => {
           <DialogContentText>
             Type Your New Name Here !
           </DialogContentText>
+       
           <TextField
             autoFocus
             margin="dense"
@@ -221,13 +228,13 @@ const EmailDialog = () => {
       <DialogContent>
           <DialogContentText>
             Type Your New Email Here !
-          </DialogContentText>
+          </DialogContentText>      
           <TextField
             autoFocus
             margin="dense"
             id="name"
             name="name"
-            label="Name"
+            label="Email"
             type="email"
             fullWidth
             value={emailDialog}
