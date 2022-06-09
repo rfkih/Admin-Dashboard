@@ -4,11 +4,13 @@ import  {useSelector, useDispatch} from 'react-redux'
 import { Dialog, TextField, DialogActions, DialogContent, Button, DialogContentText, DialogTitle} from '@mui/material'
 import axios from '../utils/axios'
 import {photoAction} from '../stores/actions'
+import { width } from '@mui/system'
 
 
 function Profile() {
   const [ userData, setUserData] = useState([])
   const dispatch = useDispatch();
+  const [ fileUpdate, setFileUpdate] = useState(false)
   const [ fileStatus, setFileStatus] = useState(false)
   const [ selectedFile, setSelectedFile] = useState(null)
   const [ openName, setOpenName] = useState(false)
@@ -42,13 +44,14 @@ useEffect(() => {
 
 
 const fileSelectedHandler = (e) => {
-  // setFileStatus(false)
+ 
   console.log(e.target.files[0])
   let uploaded = e.target.files[0]
   const ImageUrl = URL.createObjectURL(uploaded)
   setUserData({ ...userData, photo: ImageUrl });
   setSelectedFile(uploaded)
   setFileStatus(true)
+  
 };
 
 const handleClose = () => {
@@ -62,11 +65,18 @@ useEffect(() => {
   setFileStatus(false)
 },[fileStatus])
 
+useEffect(() => {
+  if(fileUpdate){
+    updateUser();
+  }
+  setFileUpdate(false)
+},[userData])
+
 
 
 const onSavePhoto = async () => {
   const { id, token } = JSON.parse(localStorage.getItem("userData"));
-  console.log("jalan")
+  
   try {
     const formData = new FormData();
     formData.append("photo", selectedFile);
@@ -79,29 +89,46 @@ const onSavePhoto = async () => {
       }
     );
     const Image = response.data.Image;
+    setFileUpdate(true)
     const payload = {photo: Image}
     const actionObj = photoAction(payload);
     dispatch(actionObj)
-    console.log(actionObj)
-    setUserData({ ...userData, photo: Image });
-   
-    alert("Update Success");
-    
+    setUserData({ ...userData, photo: Image }); 
 
-    console.log(response.data);
   } catch (error) {
     console.log(error);
   }
 };
 
-const NameDialog = ({}) => {
-  const [name, setName] = useState('')
-
-  const handleChange = (e) => {
-    setName( e.target.value );
+const updateUser = async () => {      
+  const updatedUserData = {
+    gender, name, email, photo
+  };
+ 
+await axios
+.put(`/users/update/${id}`, {updatedUserData, params: { id: id } } )
+.then((res) => {
+  alert(res.data.message);
+})
+.catch((error) => console.log({ error }));
 };
 
-console.log(name)
+
+
+const NameDialog = ({}) => {
+  const [nameDialog, setNameDialog] = useState('')
+
+  const handleChange = (e) => {
+    setNameDialog( e.target.value );
+};
+
+  const onSave = () => (
+    setFileUpdate(true),
+    setUserData({ ...userData, name: nameDialog }),
+    setOpenName(false)
+  )
+
+
  
   return (
     <Dialog fullWidth maxWidth="sm" open={openName} onClose={handleClose}>
@@ -118,14 +145,13 @@ console.log(name)
             label="Name"
             type="text"
             fullWidth
-            value={name}
+            value={nameDialog}
             onChange={handleChange}
             variant="outlined"
           />
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Save</Button>
+        <DialogActions style={{display: 'flex', paddingBottom:"1em", justifyContent:'space-around'}}>
+          <Button onClick={onSave} style={{borderRadius:"10px", width:"10em", color:"white", backgroundColor:"blue"}}>Save</Button>
         </DialogActions>
 
     </Dialog>
