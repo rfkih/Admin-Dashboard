@@ -16,6 +16,7 @@
       payload: { id, username, name, role, token, photo, email },
     };
   };
+
   
   export const logoutAction = () => {
     localStorage.removeItem("userData");

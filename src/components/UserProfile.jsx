@@ -50,7 +50,6 @@ function UserProfile() {
     dispatch(logoutAction());
     setIsLogin(false); 
     navigate('/')
-   
     
   };
   return (

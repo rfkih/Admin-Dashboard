@@ -1,11 +1,14 @@
 import React,{useEffect, useState} from 'react'
 import {Header} from '../components'
-import  {useSelector} from 'react-redux'
+import  {useSelector, useDispatch} from 'react-redux'
 import axios from '../utils/axios'
+
 
 function Profile() {
   const [ userData, setUserData] = useState([])
+
   const [ fileStatus, setFileStatus] = useState(false)
+  const [ updatePhoto, setUpdatePhoto ] = useState(false)
   const [ selectedFile, setSelectedFile] = useState(null)
   const { gender, name, email, photo} = userData
   const { username, role, id} = useSelector((state) => {
@@ -51,6 +54,15 @@ useEffect(() => {
   setFileStatus(false)
 },[fileStatus])
 
+useEffect(() => {
+  if (updatePhoto) {
+    console.log("timeout")
+    // setTimeout(fetchUserById, 1000)
+    
+  }
+  setUpdatePhoto(false)
+},[updatePhoto])
+
 
 const onSavePhoto = async () => {
   const { id, token } = JSON.parse(localStorage.getItem("userData"));
@@ -67,9 +79,12 @@ const onSavePhoto = async () => {
       }
     );
     const Image = response.data.Image;
-    setUserData({ ...userData, photo: Image });
-    console.log("Image", Image);
+    console.log(Image)
+    // setUserData({ ...userData, photo: Image });
+   
     alert("Update Success");
+    setUpdatePhoto(true) 
+  
 
     console.log(response.data);
   } catch (error) {
@@ -84,11 +99,12 @@ const onSavePhoto = async () => {
 
 
 
+
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
         <Header category="Page" title="Profile"/>
-        <div className='flex h-content justify-between rounded-xl border-2 border-color bg-slate-100 '>
-            <div className='flex w-2/6 py-10 flex-col p-2 bg-slate-100 '>
+        <div className='flex h-content justify-between rounded-xl border-2 border-color  '>
+            <div className='flex w-2/6 py-10 flex-col p-2 bg-white '>
                 <div className='px-2 gap-5 items-center mt-4'>
                 
                 <img
@@ -115,7 +131,7 @@ const onSavePhoto = async () => {
                 
                 </div>
             </div>
-            <div className='flex w-4/6 py-10 flex-col bg-slate-200'>  
+            <div className='flex w-4/6 py-10 flex-col bg-slate-100'>  
               <div className='mt-3 mx-2'>
                 <p className='mx-2 font-bold text-lg'>Personal Data</p>
               </div>   
