@@ -4,7 +4,7 @@ import { FiShoppingCart } from 'react-icons/fi';
 import { BsChatLeft } from 'react-icons/bs';
 import { RiNotification3Line } from 'react-icons/ri';
 import { MdKeyboardArrowDown } from 'react-icons/md';
-import React, {useEffect} from 'react'
+import React, {useEffect, useRef} from 'react'
 import { useSelector } from 'react-redux';
 
 
@@ -33,10 +33,17 @@ const NavButton = ({title, customFunc, icon, color, dotColor}) => (
 )
 
 function Navbar() {
-    const { username, role, id, photo, name } = useSelector((state) => {
+    const { photo, name } = useSelector((state) => {
         return state.auth;
       });
-    const { activeMenu, setActiveMenu, currentColor, isClicked, setIsClicked, setScreenSize, screenSize, handleClick } = useStateContext();
+    const photoImage = useSelector((state) => {
+        return state.photo
+    })
+   
+    const { activeMenu, setActiveMenu, currentColor, isClicked, initialState, setIsClicked, setScreenSize, screenSize, handleClick } = useStateContext();
+   
+    
+     
 
 
     useEffect(() => {
@@ -60,7 +67,7 @@ function Navbar() {
 
     const handleActiveMenu = () => setActiveMenu(!activeMenu);
 
-   
+    
 
   return (
     <div className='flex justify-between bg-white p-2 md:ml-6 md:mr-6 relative'>
@@ -77,7 +84,7 @@ function Navbar() {
             >
                 <img
                   className="rounded-full w-8 h-8"
-                  src={photo}
+                  src={photoImage.photo || photo}
                   alt="user-profile"
                 />
                 <p>
@@ -97,6 +104,8 @@ function Navbar() {
     </div>
     </div>
     )
+
+   
 }
 
 export default Navbar

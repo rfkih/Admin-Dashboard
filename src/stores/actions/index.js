@@ -3,6 +3,8 @@
         "userData",
         JSON.stringify({ id, username, name, role, token, photo, email })
       );
+
+      localStorage.setItem("UserPhoto", JSON.stringify({ photo }) )
       
       return {
         type: "LOGIN_SUCCESS",
@@ -16,6 +18,17 @@
       payload: { id, username, name, role, token, photo, email },
     };
   };
+
+  export const photoAction = ({photo}) => {
+    localStorage.setItem(
+      "photoData",
+      JSON.stringify({photo})
+    );
+    return {
+      type: "UPDATE_PHOTO",
+      payload: { photo }
+    }
+  }
 
   
   export const logoutAction = () => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{ useRef, useEffect} from 'react'
 import { MdOutlineCancel} from 'react-icons/md'
 import { Link, useLocation, useNavigate, Navigate } from "react-router-dom";
 import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, FiShoppingCart } from 'react-icons/fi';
@@ -39,10 +39,28 @@ function UserProfile() {
   const { username, role, id, photo, email } = useSelector((state) => {
     return state.auth;
   });
+  const  photoImage = useSelector((state) => {
+    return state.photo
+  })
   const dispatch = useDispatch();
-  const {currentColor, setIsLogin} = useStateContext();
+  const {currentColor, setIsLogin, setIsClicked, isClicked, initialState} = useStateContext();
+  const profileRef = useRef()
 
 
+  useEffect(() => {  
+    const closeProfile = (e) => {   
+        
+        console.log(!profileRef.current?.contains(e.target))
+        if (!profileRef.current?.contains(e.target)) {       
+            setIsClicked(initialState)
+         
+      }          
+    }
+   document.body.addEventListener('click', closeProfile)
+   return () => document.body.removeEventListener('click', closeProfile)
+ }, [isClicked])
+
+ 
 
   const navigate = useNavigate();
 
@@ -53,7 +71,7 @@ function UserProfile() {
     
   };
   return (
-    <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
+    <div  ref={profileRef} className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96">
       <div className='flex justify-between items-center'>
         <p className='font-semibold text-lg dark:text-gray-200'> User Profile</p>
         <Button
@@ -67,7 +85,7 @@ function UserProfile() {
       <div className='flex gap-5 items-center mt-6 border-color border-b-1 pb-6'>
         <img
           className='rounded-full h-24 w-24'
-          src={photo}
+          src={photoImage.photo || photo}
           alt="User Profile"
         />
         <div>

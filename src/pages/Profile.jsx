@@ -2,13 +2,13 @@ import React,{useEffect, useState} from 'react'
 import {Header} from '../components'
 import  {useSelector, useDispatch} from 'react-redux'
 import axios from '../utils/axios'
+import {photoAction} from '../stores/actions'
 
 
 function Profile() {
   const [ userData, setUserData] = useState([])
-
+  const dispatch = useDispatch();
   const [ fileStatus, setFileStatus] = useState(false)
-  const [ updatePhoto, setUpdatePhoto ] = useState(false)
   const [ selectedFile, setSelectedFile] = useState(null)
   const { gender, name, email, photo} = userData
   const { username, role, id} = useSelector((state) => {
@@ -54,14 +54,6 @@ useEffect(() => {
   setFileStatus(false)
 },[fileStatus])
 
-useEffect(() => {
-  if (updatePhoto) {
-    console.log("timeout")
-    // setTimeout(fetchUserById, 1000)
-    
-  }
-  setUpdatePhoto(false)
-},[updatePhoto])
 
 
 const onSavePhoto = async () => {
@@ -79,18 +71,37 @@ const onSavePhoto = async () => {
       }
     );
     const Image = response.data.Image;
-    console.log(Image)
-    // setUserData({ ...userData, photo: Image });
+    const payload = {photo: Image}
+    const actionObj = photoAction(payload);
+    dispatch(actionObj)
+    console.log(actionObj)
+    setUserData({ ...userData, photo: Image });
    
     alert("Update Success");
-    setUpdatePhoto(true) 
-  
+    
 
     console.log(response.data);
   } catch (error) {
     console.log(error);
   }
 };
+
+// const onLogin = async () => {
+//   try {
+//     const res = await axios.post("/users/login", {
+//       username: formState.username,
+//       password: formState.password,
+//     });
+//     const payload = res.data;
+//     console.log(payload)
+//     const actionObj = loginAction(payload);
+//     console.log(actionObj);
+//     dispatch(actionObj);
+//   } catch (error) {
+//     console.log(error.response.data);
+//   }
+// };
+
 
 
 

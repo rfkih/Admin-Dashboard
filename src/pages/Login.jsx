@@ -3,7 +3,7 @@ import { TextField, FormControl, Radio, IconButton, RadioGroup, FormLabel, FormC
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Link, NavLink,  Navigate } from 'react-router-dom'
-import { loginAction } from '../stores/actions';
+import { loginAction, photoAction } from '../stores/actions';
 import { useDispatch, useSelector } from 'react-redux'
 import axios from '../utils/axios'
 import { useStateContext  } from '../contexts/ContextProvider';

@@ -35,8 +35,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
       setProduct({ ...product, [e.target.name]: e.target.value });
   };
     
- useEffect(() => {
-    
+ useEffect(() => {  
     const closeEdit = (e) => {   
    
         if (!btnRef.current?.contains(e.target)) {       
