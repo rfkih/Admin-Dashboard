@@ -1,10 +1,11 @@
 import React,{useEffect, useState} from 'react'
 import {Header} from '../components'
 import  {useSelector, useDispatch} from 'react-redux'
-import { Dialog, TextField, DialogActions, DialogContent, Button, DialogContentText, DialogTitle} from '@mui/material'
+import { Dialog, TextField, DialogActions, DialogContent, RadioGroup, FormControlLabel, Radio, Button, DialogContentText, DialogTitle} from '@mui/material'
 import axios from '../utils/axios'
 import {photoAction} from '../stores/actions'
 import { width } from '@mui/system'
+import { Direction } from '@syncfusion/ej2-react-charts'
 
 
 function Profile() {
@@ -56,6 +57,8 @@ const fileSelectedHandler = (e) => {
 
 const handleClose = () => {
   setOpenName(false);
+  setOpenGender(false)
+  setOpenEmail(false)
 };
 
 useEffect(() => {
@@ -115,7 +118,7 @@ await axios
 
 
 
-const NameDialog = ({}) => {
+const NameDialog = () => {
   const [nameDialog, setNameDialog] = useState('')
 
   const handleChange = (e) => {
@@ -128,8 +131,6 @@ const NameDialog = ({}) => {
     setOpenName(false)
   )
 
-
- 
   return (
     <Dialog fullWidth maxWidth="sm" open={openName} onClose={handleClose}>
       <DialogTitle>Change your Name</DialogTitle>
@@ -153,7 +154,90 @@ const NameDialog = ({}) => {
         <DialogActions style={{display: 'flex', paddingBottom:"1em", justifyContent:'space-around'}}>
           <Button onClick={onSave} style={{borderRadius:"10px", width:"10em", color:"white", backgroundColor:"blue"}}>Save</Button>
         </DialogActions>
+    </Dialog>
+  )
+}
 
+const GenderDialog = ({}) => {
+  const [genderDialog, setGenderDialog] = useState('FEMALE')
+
+  const handleChange = (e) => {
+    setGenderDialog( e.target.value );
+};
+
+  const onSave = () => (
+    setFileUpdate(true),
+    setUserData({ ...userData, gender: genderDialog }),
+    setOpenGender(false)
+  )
+
+  return (
+    <Dialog fullWidth maxWidth="sm" open={openGender} onClose={handleClose}>
+      <div className='flex row w-full   items-center justify-center mx-5' >
+      <DialogTitle>Change your Gender</DialogTitle>
+      </div>
+      <DialogContent>
+        <div className='flex row w-full text-xl -mt-3  items-center justify-center m-2'>
+          <DialogContentText>
+            Select Your New Gender!
+          </DialogContentText>     
+        </div>
+            <RadioGroup
+              aria-labelledby="demo-radio-buttons-group-label"
+              defaultValue="FEMALE"
+              name="gender"
+              onChange={handleChange}
+            >
+              <div className='flex row w-full  items-center justify-around mx-5'>
+              <FormControlLabel value="FEMALE" control={<Radio />} label="Female" />
+              <FormControlLabel value="MALE" control={<Radio />} label="Male" />
+              </div>
+            </RadioGroup>
+          
+        </DialogContent>
+        <DialogActions style={{display: 'flex', paddingBottom:"1em", justifyContent:'space-around'}}>
+          <Button onClick={onSave} style={{borderRadius:"10px", width:"10em", color:"white", backgroundColor:"blue"}}>Save</Button>
+        </DialogActions>
+    </Dialog>
+  )
+}
+
+const EmailDialog = () => {
+  const [emailDialog, setEmailDialog] = useState('')
+
+  const handleChange = (e) => {
+    setEmailDialog( e.target.value );
+};
+
+  const onSave = () => (
+    setFileUpdate(true),
+    setUserData({ ...userData, email: emailDialog }),
+    setOpenEmail(false)
+  )
+
+  return (
+    <Dialog fullWidth maxWidth="sm" open={openEmail} onClose={handleClose}>
+      <DialogTitle>Change your Email</DialogTitle>
+      <DialogContent>
+          <DialogContentText>
+            Type Your New Email Here !
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            name="name"
+            label="Name"
+            type="email"
+            fullWidth
+            value={emailDialog}
+            onChange={handleChange}
+            variant="outlined"
+          />
+        </DialogContent>
+        <DialogActions style={{display: 'flex', paddingBottom:"1em", justifyContent:'space-around'}}>
+          <Button onClick={onSave} style={{borderRadius:"10px", width:"10em", color:"white", backgroundColor:"blue"}}>Save</Button>
+        </DialogActions>
     </Dialog>
   )
 }
@@ -207,16 +291,18 @@ const NameDialog = ({}) => {
                       <p className='mx-2 font-semibold text-md'>{name}</p> <p onClick={() => setOpenName(true)} className='text-sm hover:text-slate-500 hover:cursor-pointer'>change</p>
                     </div>
                     <div className='flex justify-start'>
-                      <p className='mx-2 font-semibold text-md'>{gender}</p> <p className='text-sm hover:text-slate-500 hover:cursor-pointer'>change</p>
+                      <p className='mx-2 font-semibold text-md'>{gender}</p> <p onClick={() => setOpenGender(true)} className='text-sm hover:text-slate-500 hover:cursor-pointer'>change</p>
                     </div>
                     <div className='flex justify-start'>
-                      <p className='mx-2 font-semibold text-md'>{email}</p> <p className='text-sm hover:text-slate-500 hover:cursor-pointer'>change</p>
+                      <p className='mx-2 font-semibold text-md'>{email}</p> <p onClick={() => setOpenEmail(true)} className='text-sm hover:text-slate-500 hover:cursor-pointer'>change</p>
                     </div>                
                  </div>
               </div>
             </div>
         </div>
         <NameDialog/>
+        <GenderDialog/>
+        <EmailDialog/>
     </div>
   )
 }
