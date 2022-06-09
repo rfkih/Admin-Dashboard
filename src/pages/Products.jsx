@@ -69,7 +69,7 @@ function Products() {
 
   return (
     <div className='m-2 md:m-10 p-2 md:p-10'>
-        <Header category="Pages" title="Products"/>
+        <Header category="Page" title="Products"/>
         <div className='w-full flex items-center flex-wrap justify-between h-content rounded-t-lg bg-slate-200'>
             <div className='mx-3 w-5 h-content'>
                 <button
