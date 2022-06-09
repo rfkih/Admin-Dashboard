@@ -108,7 +108,6 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
   
 
     const fileUploadHandler = () => {
-    
       
         const fd = new FormData();
         fd.append("productPhoto", selectedFile)

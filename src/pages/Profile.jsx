@@ -4,9 +4,11 @@ import  {useSelector} from 'react-redux'
 import axios from '../utils/axios'
 
 function Profile() {
-  const [ userData,setUserData] = useState([])
-  const { gender, name, email} = userData
-  const { username, role, id, photo } = useSelector((state) => {
+  const [ userData, setUserData] = useState([])
+  const [ fileStatus, setFileStatus] = useState(false)
+  const [ selectedFile, setSelectedFile] = useState(null)
+  const { gender, name, email, photo} = userData
+  const { username, role, id} = useSelector((state) => {
     return state.auth;
   });
 
@@ -32,6 +34,51 @@ useEffect(() => {
 }, [])
 
 
+const fileSelectedHandler = (e) => {
+  // setFileStatus(false)
+  console.log(e.target.files[0])
+  let uploaded = e.target.files[0]
+  const ImageUrl = URL.createObjectURL(uploaded)
+  setUserData({ ...userData, photo: ImageUrl });
+  setSelectedFile(uploaded)
+  setFileStatus(true)
+}
+
+useEffect(() => {
+  if (fileStatus) {
+    onSavePhoto()
+  }
+  setFileStatus(false)
+},[fileStatus])
+
+
+const onSavePhoto = async () => {
+  const { id, token } = JSON.parse(localStorage.getItem("userData"));
+  console.log("jalan")
+  try {
+    const formData = new FormData();
+    formData.append("photo", selectedFile);
+
+    const response = await axios.put(
+      `/users/edit-profile-picture/${id}`,
+      formData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    const Image = response.data.Image;
+    setUserData({ ...userData, photo: Image });
+    console.log("Image", Image);
+    alert("Update Success");
+
+    console.log(response.data);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
 
 
 
@@ -43,16 +90,29 @@ useEffect(() => {
         <div className='flex h-content justify-between rounded-xl border-2 border-color bg-slate-100 '>
             <div className='flex w-2/6 py-10 flex-col p-2 bg-slate-100 '>
                 <div className='px-2 gap-5 items-center mt-4'>
+                
                 <img
                   className='rounded-md  w-full h-content '
                   src={photo}
                   alt="User Profile"
                 />
+                 
+               
+               
                 <button
-                  className='w-full h-content mt-3 border-1 rounded-md border-black bg-white'
+                  className='w-full h-content mt-3 border-1 rounded-md border-black bg-white '
                 >
-                  <p className='text-md py-1'> Choose Photo </p>
+                   <input
+                    onChange={fileSelectedHandler}
+                    className='hidden '
+                    type="file"
+                    id="upload-file"                  
+                />
+                <label htmlFor='upload-file' >
+                  <p className='text-md py-1 hover:cursor-pointer'> Choose Photo </p>
+                  </label>
                 </button>
+                
                 </div>
             </div>
             <div className='flex w-4/6 py-10 flex-col bg-slate-200'>  
