@@ -36,8 +36,8 @@ function Navbar() {
     const { photo, name } = useSelector((state) => {
         return state.auth;
       });
-    const photoImage = useSelector((state) => {
-        return state.photo
+    const updateData = useSelector((state) => {
+        return state.update
     })
    
     const { activeMenu, setActiveMenu, currentColor, isClicked, initialState, setIsClicked, setScreenSize, screenSize, handleClick } = useStateContext();
@@ -84,13 +84,13 @@ function Navbar() {
             >
                 <img
                   className="rounded-full w-8 h-8"
-                  src={photoImage.photo || photo}
+                  src={updateData?.photo || photo}
                   alt="user-profile"
                 />
                 <p>
                     <span className="text-gray-600 text-14">Hi,</span>{' '}
                     <span className="text-gray-600 font-bold ml-1 text-14">
-                      {name}
+                      {updateData?.name || name}
                     </span>
                 </p>
                 <MdKeyboardArrowDown className="text-gray-400 text-14" />

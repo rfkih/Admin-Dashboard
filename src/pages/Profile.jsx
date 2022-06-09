@@ -4,7 +4,7 @@ import  {useSelector, useDispatch} from 'react-redux'
 import { Dialog, TextField, DialogActions, DialogContent, RadioGroup, FormControlLabel, Radio, Button, DialogContentText, DialogTitle} from '@mui/material'
 import axios from '../utils/axios'
 
-import {photoAction} from '../stores/actions'
+import {updateAction} from '../stores/actions'
 import { width } from '@mui/system'
 import { Direction } from '@syncfusion/ej2-react-charts'
 
@@ -35,6 +35,12 @@ function Profile() {
         const {data} = res
         setUserData(data[0])
         setInitData(data[0])
+        console.log(data[0])
+        const payload = {name: data[0].name, photo: data[0].photo, email: data[0].email}
+        
+        const actionObj = updateAction(payload);
+        console.log(actionObj)
+        dispatch(actionObj)
     } catch (err) {
     console.log({ err });
         
@@ -48,7 +54,6 @@ useEffect(() => {
 
 const fileSelectedHandler = (e) => {
  
-  console.log(e.target.files[0])
   let uploaded = e.target.files[0]
   const ImageUrl = URL.createObjectURL(uploaded)
   setUserData({ ...userData, photo: ImageUrl });
@@ -95,9 +100,9 @@ const onSavePhoto = async () => {
     );
     const Image = response.data.Image;
     setFileUpdate(true)
-    const payload = {photo: Image}
-    const actionObj = photoAction(payload);
-    dispatch(actionObj)
+    // const payload = {photo: Image}
+    // const actionObj = updateAction(payload);
+    // dispatch(actionObj)
     setUserData({ ...userData, photo: Image }); 
 
   } catch (error) {
@@ -113,6 +118,8 @@ const updateUser = async () => {
 await axios
 .put(`/users/update/${id}`, {updatedUserData, params: { id: id } } )
 .then((res) => {
+  console.log(res)
+ 
   alert(res.data.message);
   fetchUserById()
 })

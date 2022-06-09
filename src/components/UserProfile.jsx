@@ -39,8 +39,8 @@ function UserProfile() {
   const { username, role, id, photo, email } = useSelector((state) => {
     return state.auth;
   });
-  const  photoImage = useSelector((state) => {
-    return state.photo
+  const  updateData = useSelector((state) => {
+    return state.update
   })
   const dispatch = useDispatch();
   const {currentColor, setIsLogin, setIsClicked, isClicked, initialState} = useStateContext();
@@ -85,13 +85,13 @@ function UserProfile() {
       <div className='flex gap-5 items-center mt-6 border-color border-b-1 pb-6'>
         <img
           className='rounded-full h-24 w-24'
-          src={photoImage.photo || photo}
+          src={updateData?.photo || photo}
           alt="User Profile"
         />
         <div>
           <p className="font-semibold text-xl dark:text-gray-200">{username}</p>
           <p className="text-gray-500 text-sm dark:text-gray-400 capitalize"> {role}  </p>
-          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {email} </p>
+          <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> {updateData.email || email} </p>
         </div>
       </div>
       <div>

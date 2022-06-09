@@ -19,16 +19,43 @@
     };
   };
 
-  export const photoAction = ({photo}) => {
+  // export const photoAction = ({photo}) => {
+  //   localStorage.setItem(
+  //     "photoData",
+  //     JSON.stringify({photo})
+  //   );
+  //   return {
+  //     type: "UPDATE_PHOTO",
+  //     payload: { photo }
+  //   }
+  // }
+
+  export const updateAction = ({photo, email, name}) => {
     localStorage.setItem(
-      "photoData",
-      JSON.stringify({photo})
+      "updateData",
+      JSON.stringify({photo, email, name})
     );
     return {
-      type: "UPDATE_PHOTO",
-      payload: { photo }
+      type: "UPDATE_DATA",
+      payload: { photo, name,  email, }
     }
   }
+
+  // export const emailAction = ({email}) => {
+  //   localStorage.setItem("emailData", JSON.stringify({email}));
+  //   return {
+  //     type: "UPDATE_EMAIL",
+  //     payload: {email}
+  //   }
+  // }
+
+  // export const nameAction = ({name}) => {
+  //   localStorage.setItem("nameData", JSON.stringify({name}));
+  //   return {
+  //     type: "UPDATE_NAME",
+  //     payload: {name}
+  //   }
+  // }
 
   
   export const logoutAction = () => {
