@@ -279,7 +279,7 @@ const EmailDialog = () => {
                   alt="User Profile"
                 />          
                 <button
-                  className='w-full h-content mt-3 border-1 rounded-md border-black bg-white '
+                  className='w-full h-content mt-3 border-1 rounded-md hover:bg-slate-100 border-black bg-white '
                 >
                    <input
                     onChange={fileSelectedHandler}
@@ -290,6 +290,9 @@ const EmailDialog = () => {
                 <label htmlFor='upload-file' >
                   <p className='text-md py-1 hover:cursor-pointer'> Choose Photo </p>
                   </label>
+                </button>
+                <button className='w-full mt-4 h-content bg-white border-black hover:bg-slate-100 rounded-md border-1 '>
+                      <p className='text-md py-1 hover:cursor-pointer'> Change Password </p>
                 </button>         
                 </div>
             </div>
@@ -302,6 +305,7 @@ const EmailDialog = () => {
                     <p className='mx-2 font-semibold text-md'>Name</p>
                     <p className='mx-2 font-semibold text-md'>Gender</p>
                     <p className='mx-2 font-semibold text-md'>Email</p>
+                   
                  </div>
                  <div className='flex flex-col gap-4 w-4/6'>
                     <div className='flex justify-start'>

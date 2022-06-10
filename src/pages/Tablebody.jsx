@@ -1,22 +1,25 @@
 import React,{useState, useRef, useEffect} from 'react'
 
-import { Typography,Container, Grid, TextField, Card, Avatar, CardContent,InputBase, Input, IconButton,  OutlinedInput, InputAdornment,  FormControl, InputLabel, MenuItem, Select, CardActions, Button, Paper,Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, CardHeader } from '@material-ui/core'
+import { Typography,Container, Grid, TextField, ListItem, List, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Card, Avatar, CardContent,InputBase, Input, IconButton,  OutlinedInput, InputAdornment,  FormControl, InputLabel, MenuItem, Select, CardActions, Button, Paper,Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, CardHeader } from '@material-ui/core'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import {Link, useParams} from 'react-router-dom'
 import axios from '../utils/axios';
+import { Category } from '@mui/icons-material';
 
 const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keyword, productsPerPage}) => {
     const params = useParams();
     const [ product, setProduct] = useState([])
     const [ isEdit, setIsEdit] = useState(false)
     const [ category, setCategory] = useState([])
+    const [ categories, setCategories] = useState([])
     const [ selectedFile, setSelectedFile]= useState({})
     const [ fileStatus, setFileStatus] = useState(false)
+    const [ openCategory, setOpenCategory] = useState(false)
+    const [ categoryUpdate, setCategoryUpdate] = useState(false)
     
     const { id, category_id, productName, productDetails, productIMG, isLiquid, price } = product
     const btnRef = useRef()
  
-
 
 
     category.map((name)=>{
@@ -37,7 +40,6 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
     
  useEffect(() => {  
     const closeEdit = (e) => {   
-   
         if (!btnRef.current?.contains(e.target)) {       
           setIsEdit(false)
          
@@ -46,6 +48,13 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
    document.body.addEventListener('click', closeEdit)
    return () => document.body.removeEventListener('click', closeEdit)
  }, [])
+
+ useEffect(() => {
+   if(categoryUpdate) {
+    updateProduct()
+    setCategoryUpdate(false)
+   }
+ }, [product])
  
 
  const onInputPress = (e) => {
@@ -67,10 +76,11 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
     const fetchProductById = async () => {
 
       try {
-        console.log(item.id)
+  
           const res = await axios.get(`/products/${item.id}`,{ params: { id: item.id } } )
           const {data} = res
           setCategory(data.category)
+          
           setProduct(data.result[0])
           setSelectedFile(data.result[0].productName);
     
@@ -94,7 +104,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
 
     const fileSelectedHandler = (e) => {
       setFileStatus(false)
-      console.log(e.target)
+     
       let uploaded = e.target.files[0]
       const ImageUrl = URL.createObjectURL(uploaded)
       setProduct({ ...product, productIMG: ImageUrl });
@@ -102,13 +112,33 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
       setFileStatus(true)
     }
 
-    // console.log(product.productIMG)
-    // useEffect(() => {
-    //   if (fileStatus) {
-       
-    //   }
+    const handleClose = () => {
+      setOpenCategory(false)
+    }
+
+    
+
+    const CategoryDialog = () => {
       
-    // },[product.productIMG])
+    
+      const onClick = (e) => (
+        console.log(e.target),
+        setOpenCategory(false)
+      )
+    
+      return (
+        <Dialog  maxWidth="sm" open={openCategory} onClose={handleClose}>
+          <DialogTitle>Select Category</DialogTitle>      
+              <List sx={{ pt: 0 }} >
+                {categories.map((category) => (
+                  <ListItem button key={category.id} onClick={onClick}  value={category.id} >
+                    {category.categoryName}
+                  </ListItem>
+                ))}
+              </List>
+        </Dialog>
+      )
+    }
 
     
 
@@ -137,11 +167,13 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
           const res = await axios.get("/categories");
           const  categories = res
           const category = categories.data
+          setCategories(category)
           setCategory(category)
       } catch (error) {
           console.log(alert(error.message));
       }
   };
+
 
   const updateProduct = async () => {
         
@@ -176,7 +208,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                       const number = item[column.id]
 
                       if (column.id === 'rownumber') {
-                        console.log(column.id)
+
                         return (
                           <TableCell  key={column.id} align={column.align}>
                             {number}
@@ -227,7 +259,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                       } else if(column.id === "categoryName") {
                            return( 
                             <TableCell  key={column.id} align={column.align}>
-                                {value}  
+                               <p  onClick={() => setOpenCategory(true)} className='hover:text-slate-500 cursor-pointer'> {value}  </p>  
                             </TableCell> )
 
                       }  else {
@@ -271,6 +303,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                     })}
                   </TableRow>
         }
+        <CategoryDialog/>
       </>
     )
 }
