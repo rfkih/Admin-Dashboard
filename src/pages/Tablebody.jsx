@@ -102,6 +102,14 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
       setFileStatus(true)
     }
 
+    // console.log(product.productIMG)
+    // useEffect(() => {
+    //   if (fileStatus) {
+       
+    //   }
+      
+    // },[product.productIMG])
+
     
 
   
@@ -113,9 +121,9 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
         axios.post("/products/upload", fd)
         .then((res) => {
           const productIMG = res.data.image  
-          setProduct({ ...product, productIMG })
-          setFileStatus(false)
+          setProduct({ ...product, productIMG })   
           alert("image uploaded")
+          setFileStatus(false) 
           updateProduct()
           })
         .catch((error) => console.log({ error }));

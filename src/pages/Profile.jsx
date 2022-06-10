@@ -72,7 +72,7 @@ const handleClose = () => {
 };
 
 useEffect(() => {
-  console.log(fileStatus)
+ 
   if (fileStatus) {
     onSavePhoto()
   }
