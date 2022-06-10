@@ -17,20 +17,18 @@ function App() {
 
   useEffect(() => {
     const userLocalStorage = localStorage.getItem("userData");
+
     if (userLocalStorage) {
       const userData = JSON.parse(userLocalStorage);
-  
+       
+            const { id, username, name, role, tokens, photo, email } = userData;   
 
-      const { id, username, name, role, tokens, photo, email } = userData;
-    
-
-      dispatch(keepLoginAction({ id, username, name, role, tokens, photo, email }));
-      setIsLogin(true)
-    }
-   
-   
+            dispatch(keepLoginAction({ id, username, name, role, tokens, photo, email }));
+            setIsLogin(true)
+    }  
     setIsLocalStorageChecked(true);
   }, []);
+
 
   return (
     <div>
@@ -78,7 +76,7 @@ function App() {
                         <Route path='/customers' element={<Customers/>}/>
                         <Route path='/transaction' element={<Transaction/>}/>
                         <Route path='/products' element={<Products/>}/>
-                        <Route path='profile' element={<Profile/>}/>
+                        <Route path='/profile' element={<Profile/>}/>
                     </Routes>
                 </div>
 

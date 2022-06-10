@@ -4,7 +4,7 @@ import  {useSelector, useDispatch} from 'react-redux'
 import { Dialog, TextField, DialogActions, DialogContent, RadioGroup, FormControlLabel, Radio, Button, DialogContentText, DialogTitle} from '@mui/material'
 import axios from '../utils/axios'
 
-import {updateAction} from '../stores/actions'
+import {updateAction, keepLoginAction} from '../stores/actions'
 import { width } from '@mui/system'
 import { Direction } from '@syncfusion/ej2-react-charts'
 
@@ -12,6 +12,7 @@ import { Direction } from '@syncfusion/ej2-react-charts'
 function Profile() {
   const [ userData, setUserData] = useState([])
   const [ initData, setInitData] = useState([])
+  const [ tokens, setTokens ] = useState(0)
   const dispatch = useDispatch();
   const [ fileUpdate, setFileUpdate] = useState(false)
   const [ fileStatus, setFileStatus] = useState(false)
@@ -25,7 +26,7 @@ function Profile() {
   });
 
 
-
+console.log(id)
 
 
   const fetchUserById = async () => {
@@ -36,11 +37,13 @@ function Profile() {
         setUserData(data[0])
         setInitData(data[0])
         console.log(data[0])
-        const payload = {name: data[0].name, photo: data[0].photo, email: data[0].email}
-        
-        const actionObj = updateAction(payload);
-        console.log(actionObj)
-        dispatch(actionObj)
+        if (tokens) {
+          const payload = {id: data[0].id, token: tokens, username: data[0].username, role:data[0].role, name: data[0].name, photo: data[0].photo, email: data[0].email}      
+          const actionObj = keepLoginAction(payload);
+          dispatch(actionObj)
+          
+        }
+       
     } catch (err) {
     console.log({ err });
         
@@ -69,6 +72,7 @@ const handleClose = () => {
 };
 
 useEffect(() => {
+  console.log(fileStatus)
   if (fileStatus) {
     onSavePhoto()
   }
@@ -112,14 +116,13 @@ const onSavePhoto = async () => {
 
 const updateUser = async () => {      
   const updatedUserData = {
-    gender, name, email, photo
+   id, gender, name, email, photo
   };
  
 await axios
 .put(`/users/update/${id}`, {updatedUserData, params: { id: id } } )
 .then((res) => {
-  console.log(res)
- 
+  setTokens(res.data.token)
   alert(res.data.message);
   fetchUserById()
 })
