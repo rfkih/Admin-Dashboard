@@ -208,6 +208,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
   .then((res) => {
     alert(res.data.message);
     fetchProducts();
+    fetchCategories();
   })
   .catch((error) => console.log({ error }));
 };
@@ -305,12 +306,6 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                         return (    
                           <TableCell key={column.id} align={column.align} style={{ maxWidth:  60}} >
                             {value ? <p className="font-semibold">Liquid</p> :  <p className="font-semibold" >Non-Liquid</p>}
-                          </TableCell>                                      
-                        )
-                      } else if(column.id === "categoryName") {
-                        return (    
-                          <TableCell key={column.id} align={column.align} style={{ maxWidth:  60}} >
-                            {value ? <p>{value}</p> : <p>{selectedCategory}</p>}
                           </TableCell>                                      
                         )
                       } else {
