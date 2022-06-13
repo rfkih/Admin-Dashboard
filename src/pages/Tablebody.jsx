@@ -5,6 +5,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import {Link, useParams} from 'react-router-dom'
 import axios from '../utils/axios';
 import { Category } from '@mui/icons-material';
+import { setTime } from '@syncfusion/ej2-react-schedule';
 
 const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keyword, productsPerPage}) => {
     const params = useParams();
@@ -14,19 +15,31 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
     const [ categories, setCategories] = useState([])
     const [ selectedFile, setSelectedFile]= useState({})
     const [ fileStatus, setFileStatus] = useState(false)
+    const [ emptyCategory, setEmptyCategory] = useState(false)
+    const [ selectedCategory, setSelectedCategory] = useState('')
     const [ openCategory, setOpenCategory] = useState(false)
     const [ categoryUpdate, setCategoryUpdate] = useState(false)
     
     const { id, category_id, productName, productDetails, productIMG, isLiquid, price } = product
     const btnRef = useRef()
- 
+
+    const handleClose = (value) => {
+      setOpenCategory(false)
+      setProduct({ ...product, category_id: value })
+
+      setTimeout(3000, setSelectedCategory(value))
+      
+    }
+
+
 
 
     category.map((name)=>{
-        if (item.category_id == name.id) {  
-            item.categoryName = name.categoryName
-        }
+      if (item.category_id == name.id) {  
+          item.categoryName = name.categoryName
+      }
     })
+ 
 
     category.map((name)=>{
       if (product.category_id == name.id) {  
@@ -52,8 +65,8 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
  useEffect(() => {
    if(categoryUpdate) {
     updateProduct()
-    setCategoryUpdate(false)
-   }
+  }
+  setCategoryUpdate(false)
  }, [product])
  
 
@@ -112,26 +125,27 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
       setFileStatus(true)
     }
 
-    const handleClose = () => {
-      setOpenCategory(false)
-    }
 
     
 
-    const CategoryDialog = () => {
+    const CategoryDialog = ({selectedCategory, onClose, openCategory}) => {
       
     
-      const onClick = (e) => (
-        console.log(e.target),
-        setOpenCategory(false)
-      )
+      const handleClose = () => {
+        onClose(selectedCategory)
+      }
+
+      const handleListItemClick = (value) => {
+        setCategoryUpdate(true)
+        onClose(value)
+      }
     
       return (
         <Dialog  maxWidth="sm" open={openCategory} onClose={handleClose}>
           <DialogTitle>Select Category</DialogTitle>      
               <List sx={{ pt: 0 }} >
                 {categories.map((category) => (
-                  <ListItem button key={category.id} onClick={onClick}  value={category.id} >
+                  <ListItem button key={category.id} onClick={() => handleListItemClick(category.id)}  value={category.id} >
                     {category.categoryName}
                   </ListItem>
                 ))}
@@ -192,8 +206,8 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
   await axios
   .put(`/products/${id}`, {updatedProduct, params: { id: id } } )
   .then((res) => {
-    fetchProducts();
     alert(res.data.message);
+    fetchProducts();
   })
   .catch((error) => console.log({ error }));
 };
@@ -293,6 +307,12 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                             {value ? <p className="font-semibold">Liquid</p> :  <p className="font-semibold" >Non-Liquid</p>}
                           </TableCell>                                      
                         )
+                      } else if(column.id === "categoryName") {
+                        return (    
+                          <TableCell key={column.id} align={column.align} style={{ maxWidth:  60}} >
+                            {value ? <p>{value}</p> : <p>{selectedCategory}</p>}
+                          </TableCell>                                      
+                        )
                       } else {
                           return(
                               <TableCell key={column.id} align={column.align} style={{ maxWidth:  160}}>
@@ -303,7 +323,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                     })}
                   </TableRow>
         }
-        <CategoryDialog/>
+        <CategoryDialog openCategory={openCategory} onClose={handleClose} selectedCategory={category_id}/>
       </>
     )
 }
