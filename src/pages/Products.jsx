@@ -4,6 +4,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from '../utils/axios'
 import moment from 'moment'
 import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import AddIcon from '@mui/icons-material/Add';
 import {Link} from 'react-router-dom'
 
 import {Header} from '../components'
@@ -18,6 +19,7 @@ function Products() {
     const [ products, setProducts ] = useState([])
     const [ productsPerPage, setProductsPerPage] = useState(10)
     const [ editMode, setEditMode] = useState(false)
+    const [ add, setAdd ] = useState(false)
 
 
 
@@ -72,13 +74,20 @@ function Products() {
     <div className='m-2 md:m-10 p-2 md:p-10'>
         <Header category="Page" title="Products"/>
         <div className='w-full flex items-center flex-wrap justify-between h-content rounded-t-lg bg-slate-200'>
-            <div className='mx-3 w-5 h-content'>
+            <div className='flex mx-3 w-5 h-content'>
                 <button
                     type="button"
                     className='rounded-sm hover:bg-slate-300 p-1 '
                     onClick={() => setEditMode(!editMode)}
                 >
                     {editMode ? <div className='flex items-center text-xl text-slate-400'><ModeEditIcon fontSize='small'/> <p classNames='text-slate-400'>Edit</p></div> : <div className='flex items-center text-xl text-slate-900'><ModeEditIcon  fontSize='small' /> <p className='text-slate-900'>Edit</p></div>}
+                </button>
+                <button
+                  type="button"
+                  className='rounded-sm hover:bg-slate-300 p-1'
+                  onClick={() => setAdd(!add)}
+                >
+                  {add ? <div className='flex items-center text-xl text-slate-400' ><AddIcon fontSize='small'/> <p classNames='text-slate-400'>Add</p></div> : <div className='flex items-center text-xl text-slate-900' ><AddIcon fontSize='small'/> <p classNames='text-slate-400'>Add</p></div>}
                 </button>
 
             </div>
@@ -125,9 +134,12 @@ function Products() {
                     ))}
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                       <AddProduct columnsProducts={columnsProducts} />            
-                </TableBody>
+                {add && 
+                  <TableBody>
+                    <AddProduct columnsProducts={columnsProducts} setAdd={setAdd} add={add} />            
+                  </TableBody>
+                }
+                
                 <TableBody>
                     {products.map((item, index) => (
                         <Tablebody key={index} page={page} productsPerPage={productsPerPage} keyword={keyword} item={item} fetchProducts={fetchProducts} editMode={editMode} columnsProducts={columnsProducts}/>

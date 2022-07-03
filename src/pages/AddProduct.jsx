@@ -4,13 +4,14 @@ import { Typography,Container, Grid, TextField, ListItem, List, Dialog, DialogTi
 import axios from '../utils/axios'
 
 
-function AddProduct({columnsProducts}) {
+function AddProduct({columnsProducts, setAdd, add}) {
   const initState = {
     category_id : '',
     productName : '',
     productDetails: '',
     productIMG: 'https://getstamped.co.uk/wp-content/uploads/WebsiteAssets/Placeholder.jpg',
     isLiquid: '',
+    isDeleted: 0,
     price: '',
   }
   const [ fileStatus, setFileStatus] = useState(false)
@@ -18,6 +19,7 @@ function AddProduct({columnsProducts}) {
   const [ newProduct, setNewProduct] = useState(initState)
   const [ category, setCategory] = useState('')
   const [ categories, setCategories] = useState([])
+  const { category_id, productName, productDetails, productIMG, isDeleted, isLiquid, price} = newProduct
   
   
   const fileSelectedHandler = (e) => {
@@ -71,6 +73,21 @@ useEffect(() => {
 
 
 
+const addNewProduct = async () => {
+         
+await axios
+.post("/products", { newProduct} )
+.then((res) => {
+ alert(res.data);
+ setAdd(false)
+  // window.location.reload()
+})
+.catch((error) => console.log({ error }));
+};
+
+
+
+
   return (
         <TableRow hover role="checkbox" tabIndex={-1} key={0}>
           {columnsProducts.map((column) => {
@@ -79,7 +96,7 @@ useEffect(() => {
            if (column.id == 'rownumber') {
              return(
               <TableCell key={column.id} align={column.align}>
-                Add
+                {category_id && productName && productDetails && isLiquid && price ? <button type="button" className='rounded-lg p-1 px-2 bg-slate-300' onClick={addNewProduct}>Add</button> : <div> Add </div>}
               </TableCell>
              )
            }else if(column.id == 'productIMG') {
