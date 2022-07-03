@@ -30,15 +30,27 @@ function AddProduct({columnsProducts}) {
     setFileStatus(true)
   }
 
+  const fileUploadHandler = () => {
+      
+    const fd = new FormData();
+    fd.append("productPhoto", selectedFile)
+    axios.post("/products/upload", fd)
+    .then((res) => {
+      const productIMG = res.data.image  
+      setNewProduct({ ...newProduct, productIMG })   
+      alert("image uploaded")
+      setFileStatus(false)
+
+      })
+    .catch((error) => console.log({ error }));
+  } 
+
+
   const handleChange = (e) => {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
 };
 
-// category?.map((name)=>{
-//   if (newProduct.category_id == name.id) {  
-//       newProduct.categoryName = name.categoryName
-//   }
-// })
+console.log(newProduct)
 
 
 const fetchCategories = async () => {
@@ -56,6 +68,7 @@ const fetchCategories = async () => {
 useEffect(() => {
   fetchCategories();
 },[])
+
 
 
   return (
@@ -89,7 +102,7 @@ useEffect(() => {
                   {fileStatus && 
                   <button
                     className=' h-5 rounded-b-md w-full bg-slate-300'
-                    // onClick={fileUploadHandler}
+                    onClick={fileUploadHandler}
                   >
                     <p className='text-xs'>Save</p>
                   </button>}
@@ -99,19 +112,19 @@ useEffect(() => {
            } else if (column.id === "categoryName") {
             return(
               <TableCell key={column.id} align={column.align}>
-                            <Select
-                              displayEmpty
-                              defaultValue=""
-                              name="category_id"
-                              onChange={handleChange}
-                            >
-                            <MenuItem value="">Choose</MenuItem>
-                            {category.map((category) => (
-                            <MenuItem  key={category.id} value={category.id}>
-                            {category.categoryName}
-                            </MenuItem>
-                        ))}
-                        </Select>
+                <Select
+                  displayEmpty
+                  defaultValue=""
+                  name="category_id"
+                  onChange={handleChange}
+                >
+                  <MenuItem value="">Choose</MenuItem>
+                  {category && category.map((category) => (
+                  <MenuItem  key={category.id} value={category.id}>
+                  {category.categoryName}
+                  </MenuItem>
+                  ))}
+                </Select>
               </TableCell>
             )
            } else if (column.id === 'isLiquid') {
@@ -122,7 +135,6 @@ useEffect(() => {
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={newProduct.isLiquid}
-                  //  displayEmpty
                    defaultValue="" name='isLiquid' onChange={handleChange} >
                    <MenuItem value='1'>Yes</MenuItem>
                    <MenuItem value='0'>No</MenuItem>
