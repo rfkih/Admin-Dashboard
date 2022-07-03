@@ -8,6 +8,7 @@ import {Link} from 'react-router-dom'
 
 import {Header} from '../components'
 import {Tablebody} from './'
+import {AddProduct} from './'
 
 function Products() {
     const [ sort, setSort] = useState('')
@@ -124,6 +125,9 @@ function Products() {
                     ))}
                   </TableRow>
                 </TableHead>
+                <TableBody>
+                       <AddProduct columnsProducts={columnsProducts} />            
+                </TableBody>
                 <TableBody>
                     {products.map((item, index) => (
                         <Tablebody key={index} page={page} productsPerPage={productsPerPage} keyword={keyword} item={item} fetchProducts={fetchProducts} editMode={editMode} columnsProducts={columnsProducts}/>

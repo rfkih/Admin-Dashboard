@@ -155,7 +155,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
     }
 
     
-console.log(productIMG)
+
   
 
     const fileUploadHandler = () => {
