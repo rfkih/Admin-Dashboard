@@ -63,7 +63,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
  }, [])
 
  useEffect(() => {
-   if(categoryUpdate) {
+   if(categoryUpdate || fileStatus) {
     updateProduct()
   }
   setCategoryUpdate(false)
@@ -155,7 +155,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
     }
 
     
-
+console.log(productIMG)
   
 
     const fileUploadHandler = () => {
@@ -167,8 +167,9 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
           const productIMG = res.data.image  
           setProduct({ ...product, productIMG })   
           alert("image uploaded")
-          setFileStatus(false) 
-          updateProduct()
+           
+          // updateProduct()
+          setFileStatus(false)
           })
         .catch((error) => console.log({ error }));
       } 
@@ -229,9 +230,7 @@ const Tablebody = ({item, columnsProducts, editMode, fetchProducts, page, keywor
                             {number}
                           </TableCell>     
                         )
-                      } else if (column.id === "productIMG" ) {   
-                        
-                        
+                      } else if (column.id === "productIMG" ) {                                               
                         return (
                             <TableCell  key={column.id} align={column.align} >
                                 <div className='flex flex-col items-center'>
