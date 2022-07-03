@@ -34,11 +34,11 @@ function AddProduct({columnsProducts}) {
     setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
 };
 
-category.map((name)=>{
-  if (newProduct.category_id == name.id) {  
-      newProduct.categoryName = name.categoryName
-  }
-})
+// category?.map((name)=>{
+//   if (newProduct.category_id == name.id) {  
+//       newProduct.categoryName = name.categoryName
+//   }
+// })
 
 
 const fetchCategories = async () => {
@@ -99,13 +99,35 @@ useEffect(() => {
            } else if (column.id === "categoryName") {
             return(
               <TableCell key={column.id} align={column.align}>
-                  test
+                            <Select
+                              displayEmpty
+                              defaultValue=""
+                              name="category_id"
+                              onChange={handleChange}
+                            >
+                            <MenuItem value="">Choose</MenuItem>
+                            {category.map((category) => (
+                            <MenuItem  key={category.id} value={category.id}>
+                            {category.categoryName}
+                            </MenuItem>
+                        ))}
+                        </Select>
               </TableCell>
             )
            } else if (column.id === 'isLiquid') {
             return(
               <TableCell key={column.id} align={column.align}>
-                  isLiquid
+                <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+                   <Select 
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={newProduct.isLiquid}
+                  //  displayEmpty
+                   defaultValue="" name='isLiquid' onChange={handleChange} >
+                   <MenuItem value='1'>Yes</MenuItem>
+                   <MenuItem value='0'>No</MenuItem>
+                   </Select>
+                </FormControl>
               </TableCell>
             )
 
