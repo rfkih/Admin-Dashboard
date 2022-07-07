@@ -87,7 +87,7 @@ useEffect(() => {
 },[userData])
 
 
-
+console.log(userData)
 const onSavePhoto = async () => {
   const { id, token } = JSON.parse(localStorage.getItem("userData"));
   

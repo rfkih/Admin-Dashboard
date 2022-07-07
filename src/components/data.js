@@ -4,6 +4,7 @@ import { FiShoppingBag, FiEdit, FiPieChart, FiBarChart, FiCreditCard, FiStar, Fi
 import { BsKanban, BsBarChart, BsBoxSeam, BsCurrencyDollar, BsShield, BsChatLeft } from 'react-icons/bs';
 import { BiColorFill } from 'react-icons/bi';
 import { IoMdContacts } from 'react-icons/io';
+import InventoryIcon from '@mui/icons-material/Inventory';
 import { RiContactsLine, RiStockLine } from 'react-icons/ri';
 import { MdOutlineSupervisorAccount } from 'react-icons/md';
 import { HiOutlineRefresh } from 'react-icons/hi';
@@ -28,9 +29,14 @@ export const links = [
     {
       title: 'Pages',
       links: [
+       
         {
           name: 'products',
           icon: <FiStar />,
+        },
+        {
+          name: 'stocks',
+          icon: <InventoryIcon fontSize="small" />,
         },
         {
           name: 'orders',
