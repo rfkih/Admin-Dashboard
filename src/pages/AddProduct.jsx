@@ -86,8 +86,6 @@ await axios
 };
 
 
-
-
   return (
         <TableRow hover role="checkbox" tabIndex={-1} key={0}>
           {columnsProducts.map((column) => {
