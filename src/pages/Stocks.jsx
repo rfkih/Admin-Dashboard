@@ -13,7 +13,7 @@ function Stocks() {
         { id:'rownumber', label: 'No', align: 'center', minWidht: 40},
         { id:'productIMG', label: 'Image', align: 'center', minWidth: 70},
         { id:'productName', label: 'Name', align: 'center', minWidth: 60},
-        { id:'category', label: 'Category', align: 'center', minWidth: 60},    
+        { id:'categoryName', label: 'Category', align: 'center', minWidth: 60},    
         { id:'totalStocks', label: 'Stocks Total', align: 'center', minWidth: 60},   
         { id:'availableStocks', label: 'Stocks Available', align: 'center', minWidth: 60},
         { id:'action', label: 'Action', align: 'center', minWidth: 30},
