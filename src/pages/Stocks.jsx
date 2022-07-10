@@ -3,20 +3,43 @@ import { Typography,Container, Grid, Card, Avatar, CardContent,InputBase, Input,
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import axios from '../utils/axios'
 import {Header} from '../components'
+import {StocksBody} from './'
+
 
 function Stocks() {
-
-
-
+  const [ stocks, setStocks ] = useState([])
 
     const columnsStocks = [
         { id:'rownumber', label: 'No', align: 'center', minWidht: 40},
-        { id:'productIMG', label: 'Image', align: 'center', minWidth: 100},
-        { id:'productName', label: 'Name', align: 'center', minWidth: 60},  
-        { id:'totalStocks', label: 'Stocks', align: 'center', minWidth: 60},   
-        { id:'add', label: 'Add', align: 'center', minWidth: 30},
-        { id:'edit', label: 'edit', align: 'center', minWidth: 60},
+        { id:'productIMG', label: 'Image', align: 'center', minWidth: 70},
+        { id:'productName', label: 'Name', align: 'center', minWidth: 60},
+        { id:'category', label: 'Category', align: 'center', minWidth: 60},    
+        { id:'totalStocks', label: 'Stocks Total', align: 'center', minWidth: 60},   
+        { id:'availableStocks', label: 'Stocks Available', align: 'center', minWidth: 60},
+        { id:'action', label: 'Action', align: 'center', minWidth: 30},
     ]
+
+
+
+
+    const fetchStocks = async () => {
+      try {
+          const res = await axios.get("/stocks" );
+          const {data} = res; 
+          setStocks(data)
+         
+      } catch (error) {
+          console.log(alert(error.message));
+      }
+  };
+
+  useEffect(() => {
+    fetchStocks();
+  },[])
+
+
+
+
   return (
     <div className='m-2 p-2 md:m-10 md:p-10'>
         <Header category="Page" title="Stocks"/>
@@ -63,6 +86,11 @@ function Stocks() {
                     ))}
 
                 </TableHead>
+                <TableBody>
+                  {stocks.map((item, index) => (
+                      <StocksBody key={index}  item={item} columnsStocks={columnsStocks}/>
+                  ))}
+                </TableBody>
             </Table>
 
         </TableContainer>

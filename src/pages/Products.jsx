@@ -8,8 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import {Link} from 'react-router-dom'
 
 import {Header} from '../components'
-import {Tablebody} from './'
-import {AddProduct} from './'
+import {ProductsBody, AddProduct} from './'
+
 
 function Products() {
     const [ sort, setSort] = useState('')
@@ -142,7 +142,7 @@ function Products() {
                 
                 <TableBody>
                     {products.map((item, index) => (
-                        <Tablebody key={index} page={page} productsPerPage={productsPerPage} keyword={keyword} item={item} fetchProducts={fetchProducts} editMode={editMode} columnsProducts={columnsProducts}/>
+                        <ProductsBody key={index} page={page} productsPerPage={productsPerPage} keyword={keyword} item={item} fetchProducts={fetchProducts} editMode={editMode} columnsProducts={columnsProducts}/>
                     ))}
                 </TableBody>
             </Table>
